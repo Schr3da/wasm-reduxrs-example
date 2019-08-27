@@ -1,4 +1,4 @@
-trait Theme {
+pub trait Theme {
     fn color_forground() -> &'static str;
     fn color_background() -> &'static str;
     fn color_1() -> &'static str;
@@ -28,7 +28,7 @@ impl Theme for LightTheme {
     }
 
     fn color_background() -> &'static str {
-        "f9f9f9"
+        "#f9f9f9"
     }
 
     fn color_1() -> &'static str {
@@ -101,11 +101,11 @@ pub struct DarkTheme;
 impl Theme for DarkTheme {
 
     fn color_forground() -> &'static str {
-        "#2a2c33"
+        "#c5c8c6"
     }
 
     fn color_background() -> &'static str {
-        "f9f9f9"
+        "#161719"
     }
 
     fn color_1() -> &'static str {
@@ -113,63 +113,63 @@ impl Theme for DarkTheme {
     }
 
     fn color_2() -> &'static str {
-        "#de3e35"
+        "#fd5ff1"
     }
 
     fn color_3() -> &'static str {
-        "#de3e35"
+        "#87c38a"
     }
 
     fn color_4() -> &'static str {
-        "#3f953a"
+        "#ffd7b1"
     }
 
     fn color_5() -> &'static str {
-        "#d2b67c"
+        "#85befd"
     }
 
     fn color_6() -> &'static str {
-        "#2f5af3"
+        "#b9b6fc"
     }
 
     fn color_7() -> &'static str {
-        "#950095"
+        "#85befd"
     }
 
     fn color_8() -> &'static str {
-        "#3f953a"
+        "#e0e0e0"
     }
 
     fn color_9() -> &'static str {
-        "#bbbbbb"
-    }
-
-    fn color_10() -> &'static str {
         "#000000"
     }
 
+    fn color_10() -> &'static str {
+        "#fd5ff1"
+    }
+
     fn color_11() -> &'static str {
-        "#de3e35"
+        "#94fa36"
     }
 
     fn color_12() -> &'static str {
-        "#3f953a"
+        "#f5ffa8"
     }
 
     fn color_13() -> &'static str {
-        "#d2b67c"
+        "#96cbfe"
     }
 
     fn color_14() -> &'static str {
-        "#2f5af3"
+        "#b9b6fc"
     }
 
     fn color_15() -> &'static str {
-        "#3f953a"
+        "#85befd"
     }
 
     fn color_16() -> &'static str {
-        "#ffffff"
+        "#e0e0e0"
     }
 
 }

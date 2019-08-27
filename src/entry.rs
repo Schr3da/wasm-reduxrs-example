@@ -2,6 +2,8 @@ use quicksilver::{Result};
 use quicksilver::lifecycle::{State, Window};
 use quicksilver::graphics::{Color};
 
+use crate::theme::{Theme, LightTheme};
+
 pub struct Canvas;
 
 impl State for Canvas {
@@ -10,7 +12,8 @@ impl State for Canvas {
     }
 
     fn draw(&mut self, window: &mut Window) -> Result<()> {
-        window.clear(Color::WHITE)?;
+        let color = Color::from_hex(LightTheme::color_background()); 
+        window.clear(color)?;
         Ok(())
     }
 }
