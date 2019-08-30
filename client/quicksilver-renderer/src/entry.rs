@@ -2,7 +2,7 @@ use quicksilver::{Result};
 use quicksilver::lifecycle::{State, Window};
 use quicksilver::graphics::{Color};
 
-use crate::theme::{Theme, LightTheme};
+use crate::common::theme::{Theme, LightTheme};
 
 pub struct Canvas;
 

@@ -1,8 +1,8 @@
 extern crate redux_rs;
 extern crate quicksilver;
+extern crate common;
 
 mod entry;
-mod theme;
 
 use quicksilver::geom::Vector;
 use quicksilver::lifecycle::{Settings, run};
