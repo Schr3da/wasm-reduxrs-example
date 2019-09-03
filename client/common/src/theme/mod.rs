@@ -1,3 +1,4 @@
+#[derive(Copy, Clone, Debug)]
 pub enum ThemeMode {
     LIGHT,
     DARK,
@@ -133,17 +134,25 @@ pub trait Theme {
     }
 }
 
-pub struct LightTheme {}
+struct LightTheme {}
 impl Theme for LightTheme {
     fn mode(&self) -> ThemeMode {
         ThemeMode::LIGHT
     }
 }
 
-pub struct DarkTheme {}
+struct DarkTheme {}
 impl Theme for DarkTheme {
     fn mode(&self) -> ThemeMode {
         ThemeMode::DARK
     }
 }
+
+pub fn new_theme<T: Theme>(mode: ThemeMode) -> Box<dyn Theme> {
+    match mode {
+        ThemeMode::LIGHT => Box::new(LightTheme{}),
+        ThemeMode::DARK => Box::new(DarkTheme{}),
+    }
+}
+
 

@@ -1,19 +1,28 @@
+use quicksilver::{Error};
 use quicksilver::{Result};
 use quicksilver::lifecycle::{State, Window};
-use quicksilver::graphics::{Color};
+use quicksilver::lifecycle::{Event};
 
-use crate::common::theme::{Theme, LightTheme};
-
-pub struct Canvas;
+pub struct Canvas; 
 
 impl State for Canvas {
     fn new() -> Result<Canvas> {
         Ok(Canvas)
     }
 
-    fn draw(&mut self, window: &mut Window) -> Result<()> {
-        let color = Color::from_hex(LightTheme::color_background()); 
-        window.clear(color)?;
+    fn event(&mut self, _event: &Event, _window: &mut Window) -> Result<()> {
+        Ok(())
+    }
+
+    fn handle_error(error: Error) {
+        println!("{:?}", error);
+    }
+
+    fn update(&mut self, _window: &mut Window) -> Result<()> {
+        Ok(())
+    }
+
+    fn draw(&mut self, _window: &mut Window) -> Result<()> {
         Ok(())
     }
 }

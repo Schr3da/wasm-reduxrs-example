@@ -3,3 +3,6 @@ name = "common"
 version = "1.0.0"
 authors = ["Schr3da <strieder.georg@gmail.com>"]
 edition = "2018"
+
+[dependencies]
+redux-rs = "*"
