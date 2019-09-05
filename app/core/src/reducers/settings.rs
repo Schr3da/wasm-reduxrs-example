@@ -1,6 +1,6 @@
 use crate::theme::{ThemeMode};
 use crate::state::{State, Settings};
-use crate::actions::settings::Actions;
+use crate::actions::settings::{Actions};
 
 fn change_theme_mode(state: &State, mode: ThemeMode) -> State {
     State {

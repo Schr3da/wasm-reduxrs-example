@@ -1,4 +1,4 @@
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum ThemeMode {
     LIGHT,
     DARK,
@@ -134,14 +134,14 @@ pub trait Theme {
     }
 }
 
-struct LightTheme {}
+pub struct LightTheme {}
 impl Theme for LightTheme {
     fn mode(&self) -> ThemeMode {
         ThemeMode::LIGHT
     }
 }
 
-struct DarkTheme {}
+pub struct DarkTheme {}
 impl Theme for DarkTheme {
     fn mode(&self) -> ThemeMode {
         ThemeMode::DARK
