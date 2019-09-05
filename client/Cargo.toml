@@ -1,6 +1,6 @@
 [workspace]
 
 members = [
-  "common",
+  "core",
   "quicksilver-renderer",
 ]

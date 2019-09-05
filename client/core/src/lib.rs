@@ -19,6 +19,5 @@ pub fn init() {
     };
 
     store.subscribe(listener); 
-
     store.dispatch(settings::Actions::ChangeThemeMode(ThemeMode::DARK));
 }
