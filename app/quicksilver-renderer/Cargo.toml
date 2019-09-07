@@ -6,4 +6,4 @@ edition = "2018"
 
 [dependencies]
 quicksilver = "*"
-common = {path = "../core"}
+core = {path = "../core"}
