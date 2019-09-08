@@ -1,5 +1,6 @@
 extern crate redux_rs;
 
+pub mod utils;
 pub mod theme;
 pub mod maps;
 pub mod actions;

@@ -1,5 +1,4 @@
 use std::collections::{HashMap};
-use crate::units::{Unit};
 
 pub enum BuildingAbilityIds {
 
@@ -29,7 +28,6 @@ pub struct Building {
     pub build_time: i32,
     pub building_type: BuildingType,
     pub position: BuildingPosition,
-    pub units: HashMap<String, Unit>,
     pub abilities: HashMap<String, BuildingAbility>,
     pub active_ability: Option<BuildingAbility>
 }

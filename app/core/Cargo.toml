@@ -9,4 +9,4 @@ name = "core"
 crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
-redux-rs = "*"
+redux-rs = "0.1.0"

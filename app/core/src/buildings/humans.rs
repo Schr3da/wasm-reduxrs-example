@@ -26,7 +26,6 @@ pub fn new_city_center(id: String, x: i32, y:i32) -> Building {
         build_time: 180,
         building_type: BuildingType::CityCenter,
         position: BuildingPosition{ x, y },
-        units: HashMap::new(),
         active_ability: Option::None,
     }
 }

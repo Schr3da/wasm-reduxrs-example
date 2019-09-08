@@ -32,8 +32,8 @@ pub enum UnitAbilityIds {
 }
 
 pub struct UnitAbility {
-   id: UnitAbilityIds,
-   name: String,
+    pub id: UnitAbilityIds,
+    pub name: String,
 }
 
 pub struct UnitPosition {
