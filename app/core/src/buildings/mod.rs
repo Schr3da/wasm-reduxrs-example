@@ -1,4 +1,5 @@
 use std::collections::{HashMap};
+use cgmath::{Vector2};
 
 pub enum BuildingAbilityIds {
 
@@ -7,11 +8,6 @@ pub enum BuildingAbilityIds {
 pub struct BuildingAbility {
     pub id: BuildingAbilityIds,
     pub name: String,
-}
-
-pub struct BuildingPosition {
-    pub x: i32,
-    pub y: i32,
 }
 
 pub enum BuildingType {
@@ -27,7 +23,7 @@ pub struct Building {
     pub template: String,
     pub build_time: i32,
     pub building_type: BuildingType,
-    pub position: BuildingPosition,
+    pub position: Vector2<i32>,
     pub abilities: HashMap<String, BuildingAbility>,
     pub active_ability: Option<BuildingAbility>
 }

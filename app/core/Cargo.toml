@@ -9,4 +9,5 @@ name = "core"
 crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
+cgmath = "0.17.0"
 redux-rs = "0.1.0"

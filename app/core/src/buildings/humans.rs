@@ -1,9 +1,9 @@
 use std::collections::{HashMap};
+use cgmath::{Vector2};
 
 use crate::buildings::{
     Building,
     BuildingType,
-    BuildingPosition,
 };
 
 pub fn new_city_center(id: String, x: i32, y:i32) -> Building {
@@ -25,7 +25,7 @@ pub fn new_city_center(id: String, x: i32, y:i32) -> Building {
         food: 12,
         build_time: 180,
         building_type: BuildingType::CityCenter,
-        position: BuildingPosition{ x, y },
+        position: Vector2::new(x, y),
         active_ability: Option::None,
     }
 }

@@ -4,7 +4,7 @@ use crate::reducers::{create_store};
 use crate::state::{State};
 use crate::theme::{ThemeMode};
 use crate::actions::{Actions};
-use crate::maps::{temple};
+use crate::maps::{Map, templates};
 
 use super::maps::{test_map};
 
@@ -28,7 +28,7 @@ pub fn test_game_set_map() {
     };
     store.subscribe(listener);
 
-    let map = temple::new(); 
+    let map = Map::new(templates::TEMPLE_MAP); 
     store.dispatch(Actions::GameSetMap(map));
 }
 

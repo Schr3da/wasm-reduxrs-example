@@ -1,6 +1,4 @@
-use super::{Map};
-
-pub static TEMPLATE: &'static str ="
+pub static TEMPLE_MAP: &'static str ="
 FFFFFFFFFFWWWWFFFFFFFFFF
 FFM....FFFWWWWFFF....MFF
 FF........WWWW........FF
@@ -11,7 +9,3 @@ FF........WWWW........FF
 FFMP...FFFWWWWFFF...PMFF
 FFFFFFFFFFWWWWFFFFFFFFFF
 ";
-
-pub fn new() -> Map {
-    Map::new(TEMPLATE)
-}

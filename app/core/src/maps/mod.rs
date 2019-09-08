@@ -1,21 +1,20 @@
-pub mod temple;
+pub mod templates;
  
 use std::vec::{Vec};
+use cgmath::{Vector2};
 
 #[derive(Clone, Copy, Debug)]
 pub struct Tile {
-    x: usize,
-    y: usize,
+    position: Vector2<i32>,
     symbol: char,
 }
 
 impl Tile {
-    fn new(x: usize, y: usize, symbol: char) -> Option<Tile> {
+    fn new(x: i32, y: i32, symbol: char) -> Option<Tile> {
         match symbol {
             ' ' => None,
             _ => Some(Tile{
-                x,
-                y,
+                position: Vector2::new(x, y),
                 symbol,
             }),
         }
@@ -39,7 +38,7 @@ impl Map {
             .map(|(y, d)| 
                 d.chars()
                 .enumerate()
-                .map(|(x, s)| Tile::new(x, y, s))
+                .map(|(x, s)| Tile::new(x as i32, y as i32, s))
                 .collect::<Vec<Option<Tile>>>()
             ).collect::<Vec<Vec<Option<Tile>>>>();
        
@@ -57,10 +56,16 @@ pub struct World {
 
 impl World {
 
-    pub fn new(map: Map) -> Self {
+    pub fn new(template: &'static str) -> Self {
         World {
-            map,
+            map: Map::new(template),
             tiles: Vec::new(),
         }
     }
+
+    pub fn tiles_for_rect(&self, v1: Vector2<i32>, v2: Vector2<i32>) {
+        let sum = v1 + v2;
+        println!("{:?}", sum);
+    }
+
 }

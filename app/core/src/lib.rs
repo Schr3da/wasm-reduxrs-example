@@ -1,4 +1,5 @@
 extern crate redux_rs;
+extern crate cgmath;
 
 pub mod utils;
 pub mod theme;

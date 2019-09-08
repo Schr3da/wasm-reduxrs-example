@@ -1,9 +1,9 @@
 use std::collections::{HashMap};
 use std::string::{String};
+use cgmath::{Vector2};
 
 use crate::units::{
     Unit,
-    UnitPosition,
     UnitType,
     UnitAttackType,
     UnitWeaponType,
@@ -27,7 +27,7 @@ pub fn new_worker(id: String, x: i32, y: i32) -> Unit {
         cooldown: 2,
         can_attack_air: false,
         can_attack_ground: true,
-        position: UnitPosition{ x, y }, 
+        position: Vector2::new(x, y), 
         unit_type: UnitType::Worker,
         attack_type: UnitAttackType::Normal,
         weapon_type: UnitWeaponType::Weak,

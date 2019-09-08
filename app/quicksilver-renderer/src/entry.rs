@@ -2,6 +2,7 @@ use quicksilver::{Error};
 use quicksilver::{Result};
 use quicksilver::lifecycle::{State, Window};
 use quicksilver::lifecycle::{Event};
+use quicksilver::graphics::{Color};
 
 pub struct Canvas; 
 
@@ -19,10 +20,12 @@ impl State for Canvas {
     }
 
     fn update(&mut self, _window: &mut Window) -> Result<()> {
+        println!("{:?}", _window.update_rate());
         Ok(())
     }
 
-    fn draw(&mut self, _window: &mut Window) -> Result<()> {
+    fn draw(&mut self, window: &mut Window) -> Result<()> {
+        window.clear(Color::WHITE)?;
         Ok(())
     }
 }

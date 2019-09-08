@@ -1,7 +1,7 @@
 use std::default::{Default};
 
 use crate::theme::{ThemeMode};
-use crate::maps::{Map, temple};
+use crate::maps::{Map, templates};
 
 #[derive(Copy, Clone, Debug)]
 pub struct Settings {
@@ -16,7 +16,7 @@ pub struct Game {
 impl Default for Game {
     fn default() -> Self {
         Game{
-           map: temple::new(),
+           map: Map::new(templates::TEMPLE_MAP),
         }
     }
 }
