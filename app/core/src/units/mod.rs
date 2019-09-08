@@ -1,5 +1,5 @@
-use std::collections::{HashMap};
-use cgmath::{Vector2};
+use cgmath::Vector2;
+use std::collections::HashMap;
 
 pub enum UnitType {
     Worker,
@@ -49,7 +49,7 @@ pub struct Unit {
     pub template: String,
     pub can_attack_air: bool,
     pub can_attack_ground: bool,
-    pub position: Vector2<i32>, 
+    pub position: Vector2<i32>,
     pub unit_type: UnitType,
     pub attack_type: UnitAttackType,
     pub weapon_type: UnitWeaponType,

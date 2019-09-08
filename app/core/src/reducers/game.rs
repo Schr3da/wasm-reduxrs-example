@@ -1,5 +1,5 @@
-use crate::state::{State, Game};
-use crate::maps::{Map};
+use crate::maps::Map;
+use crate::state::{Game, State};
 
 pub fn set_map(state: &State, map: &Map) -> State {
     State {
@@ -10,4 +10,3 @@ pub fn set_map(state: &State, map: &Map) -> State {
         ..*state
     }
 }
-

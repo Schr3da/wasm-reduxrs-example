@@ -150,9 +150,7 @@ impl Theme for DarkTheme {
 
 pub fn new_theme<T: Theme>(mode: ThemeMode) -> Box<dyn Theme> {
     match mode {
-        ThemeMode::LIGHT => Box::new(LightTheme{}),
-        ThemeMode::DARK => Box::new(DarkTheme{}),
+        ThemeMode::LIGHT => Box::new(LightTheme {}),
+        ThemeMode::DARK => Box::new(DarkTheme {}),
     }
 }
-
-

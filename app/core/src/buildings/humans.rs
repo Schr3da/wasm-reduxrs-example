@@ -1,22 +1,21 @@
-use std::collections::{HashMap};
-use cgmath::{Vector2};
+use cgmath::Vector2;
+use std::collections::HashMap;
 
-use crate::buildings::{
-    Building,
-    BuildingType,
-};
+use crate::buildings::{Building, BuildingType};
 
-pub fn new_city_center(id: String, x: i32, y:i32) -> Building {
+pub fn new_city_center(id: String, x: i32, y: i32) -> Building {
     let abilities = HashMap::new();
-    let template = String::from("
+    let template = String::from(
+        "
     xxxx
     xCCx
     xCCx
     xxxx
-    ");
-    
+    ",
+    );
+
     Building {
-        id, 
+        id,
         template,
         abilities,
         cost: 380,

@@ -1,7 +1,7 @@
-use std::default::{Default};
+use std::default::Default;
 
-use crate::theme::{ThemeMode};
-use crate::maps::{Map, templates};
+use crate::maps::{templates, Map};
+use crate::theme::ThemeMode;
 
 #[derive(Copy, Clone, Debug)]
 pub struct Settings {
@@ -10,20 +10,20 @@ pub struct Settings {
 
 #[derive(Clone)]
 pub struct Game {
-    pub  map: Map, 
+    pub map: Map,
 }
 
 impl Default for Game {
     fn default() -> Self {
-        Game{
-           map: Map::new(templates::TEMPLE_MAP),
+        Game {
+            map: Map::new(templates::TEMPLE_MAP),
         }
     }
 }
 
 impl Default for Settings {
     fn default() -> Self {
-        Settings{
+        Settings {
             mode: ThemeMode::LIGHT,
         }
     }
@@ -34,5 +34,3 @@ pub struct State {
     pub settings: Settings,
     pub game: Game,
 }
-
-

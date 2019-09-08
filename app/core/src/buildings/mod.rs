@@ -1,9 +1,7 @@
-use std::collections::{HashMap};
-use cgmath::{Vector2};
+use cgmath::Vector2;
+use std::collections::HashMap;
 
-pub enum BuildingAbilityIds {
-
-}
+pub enum BuildingAbilityIds {}
 
 pub struct BuildingAbility {
     pub id: BuildingAbilityIds,
@@ -15,7 +13,7 @@ pub enum BuildingType {
 }
 
 pub struct Building {
-    pub id: String, 
+    pub id: String,
     pub cost: i32,
     pub hp: i32,
     pub armor: i32,
@@ -25,7 +23,7 @@ pub struct Building {
     pub building_type: BuildingType,
     pub position: Vector2<i32>,
     pub abilities: HashMap<String, BuildingAbility>,
-    pub active_ability: Option<BuildingAbility>
+    pub active_ability: Option<BuildingAbility>,
 }
 
 pub mod humans;

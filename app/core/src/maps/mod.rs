@@ -1,7 +1,7 @@
 pub mod templates;
- 
-use std::vec::{Vec};
-use cgmath::{Vector2};
+
+use cgmath::Vector2;
+use std::vec::Vec;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Tile {
@@ -13,7 +13,7 @@ impl Tile {
     fn new(x: i32, y: i32, symbol: char) -> Option<Tile> {
         match symbol {
             ' ' => None,
-            _ => Some(Tile{
+            _ => Some(Tile {
                 position: Vector2::new(x, y),
                 symbol,
             }),
@@ -29,23 +29,20 @@ pub struct Map {
 
 impl Map {
     pub fn new(template: &'static str) -> Map {
-        let data: Vec<&str> = template.split('\n')
-        .filter(|v| *v != "")
-        .collect();
+        let data: Vec<&str> = template.split('\n').filter(|v| *v != "").collect();
 
-        let tiles = data.iter()
+        let tiles = data
+            .iter()
             .enumerate()
-            .map(|(y, d)| 
+            .map(|(y, d)| {
                 d.chars()
-                .enumerate()
-                .map(|(x, s)| Tile::new(x as i32, y as i32, s))
-                .collect::<Vec<Option<Tile>>>()
-            ).collect::<Vec<Vec<Option<Tile>>>>();
-       
-        Map{
-            template,
-            tiles,
-        }
+                    .enumerate()
+                    .map(|(x, s)| Tile::new(x as i32, y as i32, s))
+                    .collect::<Vec<Option<Tile>>>()
+            })
+            .collect::<Vec<Vec<Option<Tile>>>>();
+
+        Map { template, tiles }
     }
 }
 
@@ -55,10 +52,31 @@ pub struct World {
 }
 
 impl World {
+    pub fn new(template: &'static str, scale: i32) -> Self {
+        let map = Map::new(template);
 
-    pub fn new(template: &'static str) -> Self {
+        let reduce = |result: &mut Vec<Option<Tile>>,
+                      tiles: Vec<Option<Tile>>|
+         -> Vec<Option<Tile>> {
+            tiles.iter().for_each(|t| {
+                match t {
+                    Some(v) => {
+                        let pos = v.position;
+                        (0..scale)
+                            .for_each(|i| result.push(Tile::new(pos.x * i, pos.y * i, v.symbol)));
+                    }
+                    None => println!("invalid tile"),
+                };
+            });
+            result.clone()
+        };
+        /*
+                let tiles = map.tiles.iter()
+                .map(|t| t.iter().fold(Vec::new(), reduce))
+                .collect::<Vec<Vec<Option<Tile>>>>();
+        */
         World {
-            map: Map::new(template),
+            map,
             tiles: Vec::new(),
         }
     }
@@ -67,5 +85,4 @@ impl World {
         let sum = v1 + v2;
         println!("{:?}", sum);
     }
-
 }

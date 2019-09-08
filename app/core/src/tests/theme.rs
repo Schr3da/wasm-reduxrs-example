@@ -1,5 +1,5 @@
-use crate::theme::{ThemeMode, DarkTheme, LightTheme, new_theme};
- 
+use crate::theme::{new_theme, DarkTheme, LightTheme, ThemeMode};
+
 #[test]
 pub fn test_themes() {
     let dark_theme = new_theme::<DarkTheme>(ThemeMode::DARK);

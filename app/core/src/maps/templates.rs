@@ -1,4 +1,4 @@
-pub static TEMPLE_MAP: &'static str ="
+pub static TEMPLE_MAP: &'static str = "
 FFFFFFFFFFWWWWFFFFFFFFFF
 FFM....FFFWWWWFFF....MFF
 FF........WWWW........FF

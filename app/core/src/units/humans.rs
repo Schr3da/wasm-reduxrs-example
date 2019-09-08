@@ -1,14 +1,8 @@
-use std::collections::{HashMap};
-use std::string::{String};
-use cgmath::{Vector2};
+use cgmath::Vector2;
+use std::collections::HashMap;
+use std::string::String;
 
-use crate::units::{
-    Unit,
-    UnitType,
-    UnitAttackType,
-    UnitWeaponType,
-    UnitArmorType,
-};
+use crate::units::{Unit, UnitArmorType, UnitAttackType, UnitType, UnitWeaponType};
 
 pub fn new_worker(id: String, x: i32, y: i32) -> Unit {
     let abilities = HashMap::new();
@@ -27,7 +21,7 @@ pub fn new_worker(id: String, x: i32, y: i32) -> Unit {
         cooldown: 2,
         can_attack_air: false,
         can_attack_ground: true,
-        position: Vector2::new(x, y), 
+        position: Vector2::new(x, y),
         unit_type: UnitType::Worker,
         attack_type: UnitAttackType::Normal,
         weapon_type: UnitWeaponType::Weak,

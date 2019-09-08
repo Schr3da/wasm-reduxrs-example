@@ -1,10 +1,10 @@
-use quicksilver::{Error};
-use quicksilver::{Result};
+use quicksilver::graphics::Color;
+use quicksilver::lifecycle::Event;
 use quicksilver::lifecycle::{State, Window};
-use quicksilver::lifecycle::{Event};
-use quicksilver::graphics::{Color};
+use quicksilver::Error;
+use quicksilver::Result;
 
-pub struct Canvas; 
+pub struct Canvas;
 
 impl State for Canvas {
     fn new() -> Result<Canvas> {
@@ -29,4 +29,3 @@ impl State for Canvas {
         Ok(())
     }
 }
-
