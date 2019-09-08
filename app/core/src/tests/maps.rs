@@ -1,4 +1,4 @@
-use crate::maps::{Map, temple};
+use crate::maps::{World, Map, temple};
 
 pub fn test_map(template: &'static str, m: Map) {
     assert_eq!(template, m.template);
@@ -22,5 +22,10 @@ pub fn test_maps() {
 
 #[test]
 pub fn test_world() {
-    assert!(true);
+    let map = temple::new();
+    let world = World::new(map);
+   
+    test_map(world.map.template, world.map.clone());
+  
+    assert!(world.tiles.len() > 0);
 }

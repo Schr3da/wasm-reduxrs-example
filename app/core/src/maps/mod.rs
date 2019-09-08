@@ -41,7 +41,7 @@ impl Map {
                 .enumerate()
                 .map(|(x, s)| Tile::new(x, y, s))
                 .collect::<Vec<Option<Tile>>>()
-            ).collect::<Vec<_>>();
+            ).collect::<Vec<Vec<Option<Tile>>>>();
        
         Map{
             template,
@@ -57,9 +57,10 @@ pub struct World {
 
 impl World {
 
-    pub fn new(m: Map) {
-        let _data = m.tiles.iter()
-        .enumerate()
-        .for_each(|(tiles, _i)| println!("{:?}", tiles));
+    pub fn new(map: Map) -> Self {
+        World {
+            map,
+            tiles: Vec::new(),
+        }
     }
 }
