@@ -1,12 +1,21 @@
+mod settings;
+mod game;
+
 use redux_rs::{Store};
+
 use crate::state::{State};
-use crate::{actions};
+use crate::actions::{Actions};
 
-pub mod settings;
+fn reducer(state: &State, action: &Actions) -> State {
+    match action {
+        Actions::SettingsSetThemeMode(mode) =>
+            settings::set_theme_mode(state, mode),
+        Actions::GameSetMap(map) =>
+            game::set_map(state, map),
+    }
+}
 
-type Actions = actions::settings::Actions;
-
-pub fn combine_reducer() -> Store<State, Actions>{
-    Store::new(settings::reducer, State::default())
+pub fn create_store() -> Store<State, Actions>{
+    Store::new(reducer, State::default())
 }
 

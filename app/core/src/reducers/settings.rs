@@ -1,11 +1,10 @@
 use crate::theme::{ThemeMode};
 use crate::state::{State, Settings};
-use crate::actions::settings::{Actions};
 
-fn change_theme_mode(state: &State, mode: ThemeMode) -> State {
+pub  fn set_theme_mode(state: &State, mode: &ThemeMode) -> State {
     State {
         settings: Settings {
-            mode,
+            mode: *mode,
             ..state.settings
         },
         game: state.game.clone(),
@@ -13,8 +12,3 @@ fn change_theme_mode(state: &State, mode: ThemeMode) -> State {
     }
 }
 
-pub fn reducer(state: &State, action: &Actions) -> State {
-    match action {
-        Actions::ChangeThemeMode(mode) => change_theme_mode(state, *mode),
-    }
-}

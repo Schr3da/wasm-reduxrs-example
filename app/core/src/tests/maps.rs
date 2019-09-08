@@ -3,7 +3,7 @@ use crate::maps::{Map, temple};
 pub fn test_map(template: &'static str, m: Map) {
     assert_eq!(template, m.template);
     assert!(m.tiles.len() > 0);
-    
+   
     for tiles in m.tiles {
         assert!(tiles.len() > 0);
         for tile in tiles {
@@ -21,6 +21,6 @@ pub fn test_maps() {
 }
 
 #[test]
-pub fn generate_world() {
+pub fn test_world() {
     assert!(true);
 }

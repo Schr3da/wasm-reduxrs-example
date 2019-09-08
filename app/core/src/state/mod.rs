@@ -3,6 +3,7 @@ use std::default::{Default};
 use crate::theme::{ThemeMode};
 use crate::maps::{Map, temple};
 
+#[derive(Copy, Clone, Debug)]
 pub struct Settings {
     pub mode: ThemeMode,
 }

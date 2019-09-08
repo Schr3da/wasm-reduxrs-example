@@ -1,7 +1,7 @@
 use crate::theme::{ThemeMode, DarkTheme, LightTheme, new_theme};
  
 #[test]
-pub fn create_themes() {
+pub fn test_themes() {
     let dark_theme = new_theme::<DarkTheme>(ThemeMode::DARK);
     assert_eq!(dark_theme.mode(), ThemeMode::DARK);
 
