@@ -8,6 +8,7 @@ fn change_theme_mode(state: &State, mode: ThemeMode) -> State {
             mode,
             ..state.settings
         },
+        game: state.game.clone(),
         ..*state
     }
 }

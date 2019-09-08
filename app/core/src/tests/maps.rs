@@ -1,21 +1,23 @@
-use crate::maps::{temple};
+use crate::maps::{Map, temple};
 
-#[test]
-pub fn generate_map() {
-    let map = temple::new();
+pub fn test_map(template: &'static str, m: Map) {
+    assert_eq!(template, m.template);
+    assert!(m.tiles.len() > 0);
     
-    assert_eq!(temple::TEMPLATE, map.template);
-    assert!(map.tiles.len() > 0);
-    
-    for tiles in map.tiles {
+    for tiles in m.tiles {
         assert!(tiles.len() > 0);
         for tile in tiles {
             match tile {
-                Some(tile) => assert!(true),
+                Some(_tile) => assert!(true),
                 None => assert!(false),
             }
         }
     }
+}
+
+#[test]
+pub fn test_maps() {
+    test_map(temple::TEMPLATE, temple::new());
 }
 
 #[test]

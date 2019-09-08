@@ -20,7 +20,6 @@ impl Default for Game {
     }
 }
 
-
 impl Default for Settings {
     fn default() -> Self {
         Settings{
@@ -32,6 +31,7 @@ impl Default for Settings {
 #[derive(Default)]
 pub struct State {
     pub settings: Settings,
+    pub game: Game,
 }
 
 
