@@ -1,10 +1,10 @@
-use crate::maps::Map;
+use crate::maps::World;
 use crate::state::{Game, State};
 
-pub fn set_map(state: &State, map: &Map) -> State {
+pub fn set_world(state: &State, world: &World) -> State {
     State {
         game: Game {
-            map: map.clone(),
+            world: world.clone(),
             ..state.game.clone()
         },
         ..*state

@@ -1,6 +1,6 @@
 use std::default::Default;
 
-use crate::maps::{templates, Map};
+use crate::maps::{World, templates};
 use crate::theme::ThemeMode;
 
 #[derive(Copy, Clone, Debug)]
@@ -10,13 +10,13 @@ pub struct Settings {
 
 #[derive(Clone)]
 pub struct Game {
-    pub map: Map,
+    pub world: World,
 }
 
 impl Default for Game {
     fn default() -> Self {
         Game {
-            map: Map::new(templates::TEMPLE_MAP),
+            world: World::new(templates::TEMPLE_MAP, 32),
         }
     }
 }
