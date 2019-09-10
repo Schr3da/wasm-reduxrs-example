@@ -4,11 +4,13 @@ use quicksilver::lifecycle::{State, Window};
 use quicksilver::Error;
 use quicksilver::Result;
 
-use redux_rs::Store;
-
 use core::state;
+use core::redux_rs::Store;
 use core::actions::Actions;
 use core::reducers::create_store;
+
+
+
 
 pub struct Canvas {
     store: Store<core::state::State, Actions>, 
@@ -40,7 +42,6 @@ impl State for Canvas {
     }
 
     fn update(&mut self, _window: &mut Window) -> Result<()> {
-        println!("{:?}", _window.update_rate());
         Ok(())
     }
 

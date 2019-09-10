@@ -1,5 +1,4 @@
 extern crate quicksilver;
-extern crate redux_rs;
 extern crate core;
 
 mod entry;

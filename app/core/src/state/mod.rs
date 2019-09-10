@@ -29,7 +29,7 @@ impl Default for Settings {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct State {
     pub settings: Settings,
     pub game: Game,

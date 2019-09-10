@@ -6,7 +6,6 @@ edition = "2018"
 
 [lib]
 name = "core"
-crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
 cgmath = "0.17.0"

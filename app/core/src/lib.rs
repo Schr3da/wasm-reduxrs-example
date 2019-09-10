@@ -1,5 +1,5 @@
-extern crate cgmath;
-extern crate redux_rs;
+pub extern crate cgmath;
+pub extern crate redux_rs;
 
 pub mod actions;
 pub mod buildings;
