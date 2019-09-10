@@ -6,4 +6,5 @@ edition = "2018"
 
 [dependencies]
 quicksilver = "*"
+redux-rs = "0.1.0"
 core = {path = "../core"}

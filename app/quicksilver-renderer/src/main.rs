@@ -1,11 +1,12 @@
-extern crate core;
 extern crate quicksilver;
+extern crate redux_rs;
+extern crate core;
 
 mod entry;
 
-use entry::Canvas;
 use quicksilver::geom::Vector;
 use quicksilver::lifecycle::{run, Settings};
+use entry::Canvas;
 
 fn main() {
     let title = "War of Empires";
