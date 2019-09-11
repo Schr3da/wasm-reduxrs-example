@@ -4,32 +4,15 @@ use quicksilver::lifecycle::{State, Window};
 use quicksilver::Error;
 use quicksilver::Result;
 
-use core::state;
-use core::redux_rs::Store;
-use core::actions::Actions;
-use core::reducers::create_store;
-
-
-
+use core::game::Game;
 
 pub struct Canvas {
-    store: Store<core::state::State, Actions>, 
-}
-
-impl Canvas {
-    pub fn subscribe_to_store_changes(&mut self) {
-        self.store.subscribe(|_s: &state::State| {
-            println!("state updated"); 
-        });
-    }
+    game: Game,
 }
 
 impl State for Canvas {
     fn new() -> Result<Canvas> {
-        let mut c = Canvas{
-            store: create_store()
-        };
-        c.subscribe_to_store_changes();
+        let c = Canvas{ game: Game::new() };
         Ok(c)
     }
 
@@ -41,7 +24,8 @@ impl State for Canvas {
         println!("{:?}", error);
     }
 
-    fn update(&mut self, _window: &mut Window) -> Result<()> {
+    fn update(&mut self, window: &mut Window) -> Result<()> {
+        self.game.update(window.update_rate());
         Ok(())
     }
 
