@@ -19,9 +19,7 @@ impl Game {
     }
 
     pub fn subscribe_to_store_changes(&mut self) {
-        self.store.subscribe(|_s: &State| {
-            println!("state updated"); 
-        });
+        self.store.subscribe(|_s: &State| { });
     }
 
     pub fn action(&mut self, action: Actions) {

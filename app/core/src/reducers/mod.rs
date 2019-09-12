@@ -1,20 +1,27 @@
 mod game;
 mod settings;
 
-use redux_rs::Store;
-
+use redux_rs::{Store, combine_reducers};
 use crate::actions::Actions;
 use crate::state::State;
 
-fn reducer(state: &State, action: &Actions) -> State {
-    match action {
-        Actions::SettingsSetThemeMode(m) => settings::set_theme_mode(state, m),
-        Actions::GameSetElapsedTime(dt) => game::set_elapsed_time(state, dt),
-        Actions::GameSetWorld(w) => game::set_world(state, w),
-        
+use settings::settings_reducer;
+use game::game_reducer;
+
+pub fn default(state: &State) -> State {
+    State {
+        game: state.game.clone(),
+        ..*state
     }
 }
 
 pub fn create_store() -> Store<State, Actions> {
-    Store::new(reducer, State::default())
+    let reducers = combine_reducers!(
+        State,
+        &Actions,
+        settings_reducer,
+        game_reducer
+    );
+    
+    Store::new(reducers, State::default())
 }

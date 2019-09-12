@@ -4,9 +4,22 @@ use cgmath::Vector2;
 use std::vec::Vec;
 
 #[derive(Clone, Copy, Debug)]
+pub struct Size<T> {
+    pub w: T,
+    pub h: T,
+}
+
+impl<T> Size<T> {
+    pub fn new(w: T, h: T) -> Self {
+        Size { w, h }
+    }
+}
+
+#[derive(Clone, Copy, Debug)]
 pub struct Tile {
-    position: Vector2<i32>,
-    symbol: char,
+    pub position: Vector2<i32>,
+    pub size: Size<i32>,
+    pub symbol: char,
 }
 
 impl Tile {
@@ -15,6 +28,7 @@ impl Tile {
             ' ' => None,
             _ => Some(Tile {
                 position: Vector2::new(x, y),
+                size: Size::new(16, 16),
                 symbol,
             }),
         }

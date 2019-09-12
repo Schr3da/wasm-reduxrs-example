@@ -6,6 +6,7 @@ use crate::theme::ThemeMode;
 #[derive(Copy, Clone, Debug)]
 pub struct Settings {
     pub mode: ThemeMode,
+    pub scale: i32,
 }
 
 #[derive(Clone)]
@@ -27,6 +28,7 @@ impl Default for Settings {
     fn default() -> Self {
         Settings {
             mode: ThemeMode::LIGHT,
+            scale: 1,
         }
     }
 }
