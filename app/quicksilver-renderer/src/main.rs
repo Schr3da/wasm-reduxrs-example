@@ -11,8 +11,8 @@ fn main() {
     let title = "War of Empires";
     let size = Vector::new(800, 600);
     let settings = Settings {
-        draw_rate: 50.,
-        update_rate: 50.,
+        draw_rate: 30.,
+        update_rate: 30.,
         vsync: false,
         ..Settings::default()
     };

@@ -1,4 +1,5 @@
-use quicksilver::graphics::Color;
+use quicksilver::graphics::{Background::Col, Color};
+use quicksilver::geom::Rectangle;
 use quicksilver::lifecycle::Event;
 use quicksilver::lifecycle::{State, Window};
 use quicksilver::Error;
@@ -31,6 +32,18 @@ impl State for Canvas {
 
     fn draw(&mut self, window: &mut Window) -> Result<()> {
         window.clear(Color::WHITE)?;
+        
+        let state = self.game.state();
+
+        for tiles in &state.game.world.tiles {
+            for t in tiles {
+                match t {
+                    Some(t) => window.draw(&Rectangle::new((t.position.x, t.position.y), (32, 32)), Col(Color::BLUE)),
+                    None => println!("Not a valid tile"),
+                }
+            }
+        }
+
         Ok(())
     }
 }
