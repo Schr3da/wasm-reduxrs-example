@@ -21,6 +21,8 @@ impl Tile {
     }
 }
 
+type OptionTile = Option<Tile>;
+
 #[derive(Clone, Debug)]
 pub struct Map {
     pub template: &'static str,
@@ -38,46 +40,38 @@ impl Map {
                 d.chars()
                     .enumerate()
                     .map(|(x, s)| Tile::new(x as i32, y as i32, s))
-                    .collect::<Vec<Option<Tile>>>()
+                    .collect::<Vec<OptionTile>>()
             })
-            .collect::<Vec<Vec<Option<Tile>>>>();
+            .collect::<Vec<Vec<OptionTile>>>();
 
         Map { template, tiles }
     }
 }
 
+#[derive(Clone)]
 pub struct World {
     pub map: Map,
-    pub tiles: Vec<Vec<Option<Tile>>>,
+    pub tiles: Vec<Vec<OptionTile>>,
 }
 
 impl World {
-    pub fn new(template: &'static str, scale: i32) -> Self {
+    pub fn new(template: &'static str, scale: i32) -> Self { 
         let map = Map::new(template);
-
-        let reduce = |result: &mut Vec<Option<Tile>>,
-                      tiles: Vec<Option<Tile>>|
-         -> Vec<Option<Tile>> {
-            tiles.iter().for_each(|t| {
-                match t {
-                    Some(v) => {
-                        let pos = v.position;
-                        (0..scale)
-                            .for_each(|i| result.push(Tile::new(pos.x * i, pos.y * i, v.symbol)));
-                    }
-                    None => println!("invalid tile"),
-                };
-            });
-            result.clone()
-        };
-        /*
-                let tiles = map.tiles.iter()
-                .map(|t| t.iter().fold(Vec::new(), reduce))
-                .collect::<Vec<Vec<Option<Tile>>>>();
-        */
+        let tiles = map.tiles.iter().map(|t| t.iter()
+            .fold(Vec::new(), |mut result: Vec<OptionTile>, t: &OptionTile| -> Vec<OptionTile> {
+            match t {
+                Some(v) => {
+                    let pos = v.position;
+                    (0..scale).for_each(|i| result.push(Tile::new(pos.x * i, pos.y * i, v.symbol)));
+                },
+                None => println!("invalid tile"),
+            };
+            result
+        })).collect::<Vec<Vec<OptionTile>>>();
+        
         World {
             map,
-            tiles: Vec::new(),
+            tiles,
         }
     }
 

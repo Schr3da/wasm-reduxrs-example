@@ -4,11 +4,16 @@ use quicksilver::lifecycle::{State, Window};
 use quicksilver::Error;
 use quicksilver::Result;
 
-pub struct Canvas;
+use core::game::Game;
+
+pub struct Canvas {
+    game: Game,
+}
 
 impl State for Canvas {
     fn new() -> Result<Canvas> {
-        Ok(Canvas)
+        let c = Canvas{ game: Game::new() };
+        Ok(c)
     }
 
     fn event(&mut self, _event: &Event, _window: &mut Window) -> Result<()> {
@@ -19,8 +24,8 @@ impl State for Canvas {
         println!("{:?}", error);
     }
 
-    fn update(&mut self, _window: &mut Window) -> Result<()> {
-        println!("{:?}", _window.update_rate());
+    fn update(&mut self, window: &mut Window) -> Result<()> {
+        self.game.update(window.update_rate());
         Ok(())
     }
 

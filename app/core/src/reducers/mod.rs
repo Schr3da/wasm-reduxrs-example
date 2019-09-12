@@ -8,8 +8,8 @@ use crate::state::State;
 
 fn reducer(state: &State, action: &Actions) -> State {
     match action {
-        Actions::SettingsSetThemeMode(mode) => settings::set_theme_mode(state, mode),
-        Actions::GameSetMap(map) => game::set_map(state, map),
+        Actions::SettingsSetThemeMode(m) => settings::set_theme_mode(state, m),
+        Actions::GameSetWorld(w) => game::set_world(state, w),
     }
 }
 
