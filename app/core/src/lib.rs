@@ -1,5 +1,5 @@
-pub extern crate cgmath;
-pub extern crate redux_rs;
+extern crate cgmath;
+extern crate redux_rs;
 
 pub mod actions;
 pub mod buildings;
@@ -9,6 +9,7 @@ pub mod state;
 pub mod theme;
 pub mod units;
 pub mod utils;
+pub mod game;
 
 #[cfg(test)]
 pub mod tests;

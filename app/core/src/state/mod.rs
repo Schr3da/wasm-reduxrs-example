@@ -11,11 +11,13 @@ pub struct Settings {
 #[derive(Clone)]
 pub struct Game {
     pub world: World,
+    pub elapsed_time: f64,
 }
 
 impl Default for Game {
     fn default() -> Self {
         Game {
+            elapsed_time: 0.,
             world: World::new(templates::TEMPLE_MAP, 32),
         }
     }

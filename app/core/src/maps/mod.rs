@@ -48,7 +48,7 @@ impl Map {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct World {
     pub map: Map,
     pub tiles: Vec<Vec<OptionTile>>,

@@ -9,7 +9,9 @@ use crate::state::State;
 fn reducer(state: &State, action: &Actions) -> State {
     match action {
         Actions::SettingsSetThemeMode(m) => settings::set_theme_mode(state, m),
+        Actions::GameSetElapsedTime(dt) => game::set_elapsed_time(state, dt),
         Actions::GameSetWorld(w) => game::set_world(state, w),
+        
     }
 }
 
