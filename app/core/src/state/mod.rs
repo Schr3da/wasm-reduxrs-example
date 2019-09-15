@@ -1,6 +1,7 @@
 use std::default::Default;
+use std::collections::HashMap;
 
-use crate::maps::{World, templates};
+use crate::maps::{Tile, World, templates};
 use crate::theme::ThemeMode;
 
 #[derive(Copy, Clone, Debug)]
@@ -11,8 +12,9 @@ pub struct Settings {
 
 #[derive(Clone)]
 pub struct Game {
-    pub world: World,
     pub elapsed_time: f64,
+    pub world: World,
+    pub viewport: HashMap<&'static str, Option<Tile>>,
 }
 
 impl Default for Game {
@@ -20,6 +22,7 @@ impl Default for Game {
         Game {
             elapsed_time: 0.,
             world: World::new(templates::TEMPLE_MAP, 32),
+            viewport: HashMap::new(),
         }
     }
 }

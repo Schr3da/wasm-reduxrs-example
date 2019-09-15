@@ -71,12 +71,22 @@ pub struct World {
 impl World {
     pub fn new(template: &'static str, scale: i32) -> Self { 
         let map = Map::new(template);
-        let tiles = map.tiles.iter().map(|t| t.iter()
-            .fold(Vec::new(), |mut result: Vec<OptionTile>, t: &OptionTile| -> Vec<OptionTile> {
+        let mapped_tiles = map.tiles.iter().map(|tiles| tiles.iter()
+            .fold(Vec::new(), |mut result: Vec<OptionTile>, t| -> Vec<OptionTile> {
             match t {
                 Some(v) => {
-                    let pos = v.position;
-                    (0..scale).for_each(|i| result.push(Tile::new(pos.x * i, pos.y * i, v.symbol)));
+                    let position = v.position;
+                    let size = v.size;
+
+                    (0..scale).for_each(|y| {
+                        (0..scale).for_each(|x| {
+                            let new_pos = Vector2{ 
+                                x: (position.x * scale + x) * size.w,
+                                y: (position.y * size.h + y) * size.h,
+                            };
+                            result.push(Tile::new(new_pos.x, new_pos.y, v.symbol));
+                       }) 
+                    });
                 },
                 None => println!("invalid tile"),
             };
@@ -85,7 +95,7 @@ impl World {
         
         World {
             map,
-            tiles,
+            tiles: mapped_tiles,
         }
     }
 

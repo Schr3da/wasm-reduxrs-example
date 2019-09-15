@@ -6,6 +6,6 @@ FF...FF..........FF...FF
 FF..FFF..........FFF..FF
 FF...FF..........FF...FF
 FF........WWWW........FF
-FFMP...FFFWWWWFFF...PMFF
+FFM....FFFWWWWFFF...MFFF
 FFFFFFFFFFWWWWFFFFFFFFFF
 ";

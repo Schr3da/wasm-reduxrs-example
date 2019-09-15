@@ -34,11 +34,12 @@ impl State for Canvas {
         window.clear(Color::WHITE)?;
         
         let state = self.game.state();
-
         for tiles in &state.game.world.tiles {
             for t in tiles {
                 match t {
-                    Some(t) => window.draw(&Rectangle::new((t.position.x, t.position.y), (32, 32)), Col(Color::BLUE)),
+                    Some(t) => { 
+                        window.draw(&Rectangle::new((t.position.x, t.position.y), (t.size.w, t.size.h)), Col(Color::BLUE));
+                    },
                     None => println!("Not a valid tile"),
                 }
             }
