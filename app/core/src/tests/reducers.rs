@@ -1,9 +1,7 @@
 use redux_rs::Subscription;
 
-use crate::actions::Actions;
 use crate::maps::{World, templates};
-use crate::reducers::create_store;
-use crate::state::State;
+use crate::reducers::{Actions, State, create_store};
 use crate::theme::ThemeMode;
 
 #[test]

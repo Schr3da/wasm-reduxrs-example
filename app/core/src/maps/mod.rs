@@ -98,9 +98,4 @@ impl World {
             tiles: mapped_tiles,
         }
     }
-
-    pub fn tiles_for_rect(&self, v1: Vector2<i32>, v2: Vector2<i32>) {
-        let sum = v1 + v2;
-        println!("{:?}", sum);
-    }
 }

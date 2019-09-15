@@ -1,7 +1,7 @@
 use redux_rs::Store;
 
-use crate::state::State;
-use crate::actions::Actions;
+use crate::reducers::State;
+use crate::reducers::Actions;
 use crate::reducers::create_store;
 
 pub struct Game {
