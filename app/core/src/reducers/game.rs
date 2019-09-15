@@ -7,6 +7,9 @@ use super::Actions;
 use super::State;
 use super::default;
 
+pub static STATIC_VIEWPORT_ITEMS: &'static str = "static_viewport_items";
+pub static DYNAMIC_VIEWPORT_ITEMS: &'static str = "dynamic_viewport_items";
+
 #[derive(Clone)]
 pub struct Game {
     pub elapsed_time: f64,
@@ -62,7 +65,7 @@ pub fn game_reducer(state: &State, action: &Actions) -> State {
     match action {
         Actions::GameSetElapsedTime(dt) => set_elapsed_time(state, dt),
         Actions::GameSetWorld(w) => set_world(state, w),
-        Actions::GameSetViewPort(p) => set_viewport(state, p),
+        Actions::GameSetViewport(p) => set_viewport(state, p),
         _ => default(state),
     }
 }

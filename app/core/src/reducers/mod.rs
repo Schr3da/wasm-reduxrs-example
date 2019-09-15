@@ -16,7 +16,7 @@ pub enum Actions {
     SettingsSetResolution(Vector2<i32>),
     GameSetElapsedTime(f64),
     GameSetWorld(World),
-    GameSetViewPort(Vector2<i32>),
+    GameSetViewport(Vector2<i32>),
 }
 
 #[derive(Default, Clone)]
