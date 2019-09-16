@@ -1,6 +1,6 @@
 use redux_rs::Store;
 
-use crate::reducers::State;
+use crate::reducers::state::State;
 use crate::reducers::Actions;
 use crate::reducers::create_store;
 

@@ -1,20 +1,21 @@
 use cgmath::Vector2;
 use crate::theme::ThemeMode;
 
-use super::default;
+use super::state::{State, default};
 use super::Actions;
-use super::State;
 
 #[derive(Copy, Clone, Debug)]
 pub struct Settings {
     pub mode: ThemeMode,
     pub scale: i32,
+    pub default_tile_size: Vector2<i32>,
     pub resolution: Vector2<i32>, 
 }
 
 impl Default for Settings {
     fn default() -> Self {
         Settings {
+            default_tile_size: Vector2::new(16, 16),
             resolution: Vector2::new(800, 600),
             mode: ThemeMode::LIGHT,
             scale: 1,
