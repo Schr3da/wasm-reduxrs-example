@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use crate::maps::{Tile, World, templates};
 
 use super::Actions;
-use super::state::{State, default};
+use super::state::{State, AppState, default};
 
 pub static STATIC_VIEWPORT_ITEMS: &'static str = "static_views_items";
 pub static DYNAMIC_VIEWPORT_ITEMS: &'static str = "dynamic_views_items";
@@ -30,10 +30,14 @@ impl Default for Game {
 
 fn set_world(state: &State, world: &World) -> State {
     State {
-        game: Game {
-            world: world.clone(),
-            views: state.game.views.clone(),
-            ..state.game
+        prev: state.next.clone(),
+        next: AppState{
+            game: Game {
+                views: state.next.game.views.clone(),
+                world: world.clone(),
+                ..state.next.game
+            },
+            ..state.next
         },
         ..*state
     }
@@ -41,20 +45,24 @@ fn set_world(state: &State, world: &World) -> State {
 
 fn set_elapsed_time(state: &State, tick: &f64) -> State {
     State {
-        game: Game {
-            world: state.game.world.clone(),
-            views: state.game.views.clone(),
-            elapsed_time: state.game.elapsed_time + (*tick),
-            ..state.game
+        prev: state.next.clone(),
+        next: AppState{
+            game: Game {
+                world: state.next.game.world.clone(),
+                views: state.next.game.views.clone(),
+                elapsed_time: state.next.game.elapsed_time + (*tick),
+                ..state.next.game
+            },
+            ..state.next
         },
         ..*state
     }
 }
 
 fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
-    let resolution = state.settings.resolution; 
-    let tile_size = state.settings.default_tile_size;
-    let world_tiles = &state.game.world.tiles;
+    let resolution = state.next.settings.resolution; 
+    let tile_size = state.next.settings.default_tile_size;
+    let world_tiles = &state.next.game.world.tiles;
   
     let max_x = resolution.x / tile_size.x;
     let max_y = resolution.y / tile_size.y;
@@ -68,11 +76,15 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
     }
 
     State {
-        game: Game {
-            world: state.game.world.clone(),
-            views: state.game.views.clone(),
-            view_position: *view_position,
-            ..state.game
+        prev: state.next.clone(),
+        next: AppState {
+            game: Game {
+                world: state.next.game.world.clone(),
+                views: state.next.game.views.clone(),
+                view_position: *view_position,
+                ..state.next.game
+            },
+            ..state.next
         },
         ..*state
     }

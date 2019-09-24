@@ -1,7 +1,7 @@
 use cgmath::Vector2;
 use crate::theme::ThemeMode;
 
-use super::state::{State, default};
+use super::state::{State, AppState, default};
 use super::Actions;
 
 #[derive(Copy, Clone, Debug)]
@@ -25,33 +25,42 @@ impl Default for Settings {
 
 fn set_theme_mode(state: &State, mode: &ThemeMode) -> State {
     State {
-        settings: Settings {
-            mode: *mode,
-            ..state.settings
+        prev: state.next.clone(),
+        next: AppState{
+            game: state.next.game.clone(),
+            settings: Settings {
+                mode: *mode,
+                ..state.next.settings
+            },
         },
-        game: state.game.clone(),
         ..*state
     }
 }
 
 fn set_scale(state: &State, scale: &i32) -> State {
     State {
-        settings: Settings {
-            scale: *scale,
-            ..state.settings
+        prev: state.next.clone(),
+        next: AppState{
+            game: state.next.game.clone(),
+            settings: Settings {
+                scale: *scale,
+                ..state.next.settings
+            },
         },
-        game: state.game.clone(),
         ..*state
     }
 }
 
 fn set_resolution(state: &State, resolution: &Vector2<i32>) -> State {
     State {
-        settings: Settings {
-            resolution: *resolution,
-            ..state.settings
+        prev: state.next.clone(),
+        next: AppState{
+            game: state.next.game.clone(),
+            settings: Settings {
+                resolution: *resolution,
+                ..state.next.settings
+            },
         },
-        game: state.game.clone(),
         ..*state
     }
 }

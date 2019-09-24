@@ -10,7 +10,7 @@ use crate::theme::ThemeMode;
 pub fn test_settings_set_theme() {
     let mut store = create_store();
     let listener: Subscription<State> = |state: &State| {
-        assert_eq!(ThemeMode::DARK, state.settings.mode);
+        assert_eq!(ThemeMode::DARK, state.next.settings.mode);
     };
     store.subscribe(listener);
     store.dispatch(Actions::SettingsSetThemeMode(ThemeMode::DARK));
@@ -20,8 +20,8 @@ pub fn test_settings_set_theme() {
 pub fn test_game_set_map() {
     let mut store = create_store();
     let listener: Subscription<State> = |state: &State| {
-        assert!(state.game.world.map.tiles.len() > 0); 
-        assert!(state.game.world.tiles.len() > 0);
+        assert!(state.next.game.world.map.tiles.len() > 0); 
+        assert!(state.next.game.world.tiles.len() > 0);
     };
     store.subscribe(listener);
 
@@ -38,9 +38,9 @@ pub fn test_game_set_view_for_position() {
             return;
         }
         
-        assert!(state.game.world.tiles.len() > 0);
-        assert_eq!(10, state.game.view_position.x); 
-        assert_eq!(10, state.game.view_position.y); 
+        assert!(state.next.game.world.tiles.len() > 0);
+        assert_eq!(10, state.next.game.view_position.x); 
+        assert_eq!(10, state.next.game.view_position.y); 
     };
     store.subscribe(listener);
 
