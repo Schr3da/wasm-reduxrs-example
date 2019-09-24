@@ -1,7 +1,8 @@
 use quicksilver::graphics::{Background::Col, Color};
+use quicksilver::lifecycle::{State, Window};
 use quicksilver::geom::Rectangle;
 use quicksilver::lifecycle::Event;
-use quicksilver::lifecycle::{State, Window};
+use quicksilver::input::Key;
 use quicksilver::Error;
 use quicksilver::Result;
 
@@ -17,7 +18,17 @@ impl State for Canvas {
         Ok(c)
     }
 
-    fn event(&mut self, _event: &Event, _window: &mut Window) -> Result<()> {
+    fn event(&mut self, event: &Event, window: &mut Window) -> Result<()> {
+        if window.keyboard()[Key::Escape].is_down() {
+            window.close();
+        }
+
+        match event {
+            Event::Typed(k) => self.game.key_pressed(*k),
+            Event::MouseMoved(c) => self.game.mouse_moved(c.x as i32, c.y as i32),
+            _ => { },
+        }
+
         Ok(())
     }
 

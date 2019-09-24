@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use crate::maps::{Tile, World, templates};
 use crate::utils::collection;
 
-use super::Actions;
+use super::{Actions, DEFAULT_WORLD_SCALE};
 use super::state::{State, AppState, default};
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
@@ -13,6 +13,7 @@ pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
 pub struct Game {
     pub elapsed_time: f64,
     pub world: World,
+    pub cursor: Vector2<i32>,
     pub view_position: Vector2<i32>,
     pub views: HashMap<&'static str, Vec<Option<Tile>>>,
 }
@@ -21,7 +22,8 @@ impl Default for Game {
     fn default() -> Self {
         Game {
             elapsed_time: 0.,
-            world: World::new(templates::TEMPLE_MAP, 1),
+            world: World::new(templates::TEMPLE_MAP, DEFAULT_WORLD_SCALE),
+            cursor: Vector2 { x: 0, y: 0 },
             view_position: Vector2::new(0, 0),
             views: HashMap::new(),
         }
@@ -41,6 +43,27 @@ fn set_world(state: &State, world: &World) -> State {
         },
         ..*state
     }
+}
+
+fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
+    State {
+        prev: state.next.clone(),
+        next: AppState {
+            game: Game {
+                world: state.next.game.world.clone(),
+                views: state.next.game.views.clone(),
+                cursor: *cursor,
+                ..state.next.game
+            },
+            ..state.next
+        },
+        ..*state
+    }
+}
+
+fn handle_key(state: &State, key: &char) -> State {
+    println!("key pressed {:?}", key);
+    default(state)
 }
 
 fn set_elapsed_time(state: &State, tick: &f64) -> State {
@@ -83,7 +106,6 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
                 break;
             }
             
-            println!("{:?} {:?}", index_y, index_x);
             world_view.push(world_tiles[index_y][index_x]);
         }
     }
@@ -109,8 +131,9 @@ pub fn game_reducer(state: &State, action: &Actions) -> State {
     match action {
         Actions::GameSetElapsedTime(dt) => set_elapsed_time(state, dt),
         Actions::GameSetWorld(w) => set_world(state, w),
+        Actions::GameSetGameCursor(c) => set_cursor(state, c),
+        Actions::GameHandleKey(k) => handle_key(state, k),
         Actions::GameSetViewForPosition(p) => set_view_for_position(state, p),
         _ => default(state),
     }
 }
-

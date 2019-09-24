@@ -71,10 +71,9 @@ impl World {
 
                     (0..scale).for_each(|y| {
                         (0..scale).for_each(|x| {
-                            let new_pos = Vector2{ 
-                                x: (position.x * scale + x) * size.w,
-                                y: (position.y * size.h + y) * size.h,
-                            };
+                            let x = (position.x * scale + x) * size.w;
+                            let y = (position.y * scale + y) * size.h;
+                            let new_pos = Vector2{x, y};
                             result.push(Tile::new(new_pos.x, new_pos.y, v.symbol));
                        }) 
                     });

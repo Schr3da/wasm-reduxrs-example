@@ -13,6 +13,7 @@ use state::{State, state_reducer};
 use settings::settings_reducer;
 use game::game_reducer;
 
+pub static DEFAULT_WORLD_SCALE: i32 = 1;
 pub static DEFAULT_TILE_SIZE: Size<i32> = Size{w: 16, h: 16};
 pub static DEFAULT_RESOLUTION: Size<i32> = Size{w: 800, h: 600};
 
@@ -21,7 +22,9 @@ pub enum Actions {
     SettingsSetThemeMode(ThemeMode),
     SettingsSetScale(i32),
     SettingsSetResolution(Size<i32>),
+    GameHandleKey(char),
     GameSetElapsedTime(f64),
+    GameSetGameCursor(Vector2<i32>),
     GameSetWorld(World),
     GameSetViewForPosition(Vector2<i32>),
 }
