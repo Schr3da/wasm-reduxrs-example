@@ -21,7 +21,7 @@ impl Game {
 
     pub fn init(&mut self) {
         self.subscribe_to_store_changes();
-        self.store.dispatch(Actions::GameSetViewForPosition(Vector2{x: 0, y: 0}));
+        self.store.dispatch(Actions::GameSetViewForPosition(Vector2{x: 1, y: 1}));
     }
 
     pub fn subscribe_to_store_changes(&mut self) {

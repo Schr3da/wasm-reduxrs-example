@@ -1,3 +1,5 @@
+pub mod humans;
+
 use cgmath::Vector2;
 use std::collections::HashMap;
 
@@ -57,5 +59,3 @@ pub struct Unit {
     pub abilities: HashMap<String, UnitAbility>,
     pub active_ability: Option<UnitAbility>,
 }
-
-pub mod humans;

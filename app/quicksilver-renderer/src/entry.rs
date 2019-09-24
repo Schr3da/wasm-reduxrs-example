@@ -32,10 +32,9 @@ impl State for Canvas {
 
     fn draw(&mut self, window: &mut Window) -> Result<()> {
         window.clear(Color::WHITE)?;
-        
+       
         let state = self.game.state();
         for tiles in state.next.game.views.values() {
-            
             for t in tiles {
                 match t {
                     Some(t) => { 
@@ -45,7 +44,7 @@ impl State for Canvas {
                 }
             }
         }
-
+        
         Ok(())
     }
 }

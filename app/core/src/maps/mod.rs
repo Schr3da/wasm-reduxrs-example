@@ -3,17 +3,8 @@ pub mod templates;
 use cgmath::Vector2;
 use std::vec::Vec;
 
-#[derive(Clone, Copy, Debug)]
-pub struct Size<T> {
-    pub w: T,
-    pub h: T,
-}
-
-impl<T> Size<T> {
-    pub fn new(w: T, h: T) -> Self {
-        Size { w, h }
-    }
-}
+use crate::models::geometry::Size;
+use crate::reducers::DEFAULT_TILE_SIZE;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Tile {
@@ -28,7 +19,7 @@ impl Tile {
             ' ' => None,
             _ => Some(Tile {
                 position: Vector2::new(x, y),
-                size: Size::new(16, 16),
+                size: DEFAULT_TILE_SIZE,
                 symbol,
             }),
         }

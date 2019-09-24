@@ -45,7 +45,7 @@ pub fn test_game_set_view_for_position() {
     
     let listener: Subscription<State> = |state: &State| {
         
-        if (state.validate_test == false) {
+        if state.validate_test == false {
             return;
         }
         

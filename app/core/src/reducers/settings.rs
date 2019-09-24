@@ -1,22 +1,22 @@
-use cgmath::Vector2;
 use crate::theme::ThemeMode;
+use crate::models::geometry::Size;
 
 use super::state::{State, AppState, default};
-use super::Actions;
+use super::{Actions, DEFAULT_TILE_SIZE, DEFAULT_RESOLUTION};
 
 #[derive(Copy, Clone, Debug)]
 pub struct Settings {
     pub mode: ThemeMode,
     pub scale: i32,
-    pub default_tile_size: Vector2<i32>,
-    pub resolution: Vector2<i32>, 
+    pub default_tile_size: Size<i32>,
+    pub resolution: Size<i32>, 
 }
 
 impl Default for Settings {
     fn default() -> Self {
         Settings {
-            default_tile_size: Vector2::new(16, 16),
-            resolution: Vector2::new(800, 600),
+            default_tile_size: DEFAULT_TILE_SIZE,
+            resolution: DEFAULT_RESOLUTION,
             mode: ThemeMode::LIGHT,
             scale: 1,
         }
@@ -51,7 +51,7 @@ fn set_scale(state: &State, scale: &i32) -> State {
     }
 }
 
-fn set_resolution(state: &State, resolution: &Vector2<i32>) -> State {
+fn set_resolution(state: &State, resolution: &Size<i32>) -> State {
     State {
         prev: state.next.clone(),
         next: AppState {

@@ -1,6 +1,7 @@
 extern crate cgmath;
 extern crate redux_rs;
 
+pub mod models;
 pub mod buildings;
 pub mod maps;
 pub mod reducers;
