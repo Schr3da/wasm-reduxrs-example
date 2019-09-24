@@ -26,7 +26,7 @@ impl Default for Settings {
 fn set_theme_mode(state: &State, mode: &ThemeMode) -> State {
     State {
         prev: state.next.clone(),
-        next: AppState{
+        next: AppState {
             game: state.next.game.clone(),
             settings: Settings {
                 mode: *mode,
@@ -40,7 +40,7 @@ fn set_theme_mode(state: &State, mode: &ThemeMode) -> State {
 fn set_scale(state: &State, scale: &i32) -> State {
     State {
         prev: state.next.clone(),
-        next: AppState{
+        next: AppState {
             game: state.next.game.clone(),
             settings: Settings {
                 scale: *scale,
@@ -54,7 +54,7 @@ fn set_scale(state: &State, scale: &i32) -> State {
 fn set_resolution(state: &State, resolution: &Vector2<i32>) -> State {
     State {
         prev: state.next.clone(),
-        next: AppState{
+        next: AppState {
             game: state.next.game.clone(),
             settings: Settings {
                 resolution: *resolution,

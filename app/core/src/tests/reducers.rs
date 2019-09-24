@@ -7,6 +7,16 @@ use crate::reducers::state::State;
 use crate::theme::ThemeMode;
 
 #[test]
+pub fn test_prev_and_next_state() {
+    let mut store = create_store();
+    let listener: Subscription<State> =  |state: &State| {
+        assert!(state.prev.game.elapsed_time != state.next.game.elapsed_time);
+    };
+    store.subscribe(listener);
+    store.dispatch(Actions::GameSetElapsedTime(1000.));
+}
+
+#[test]
 pub fn test_settings_set_theme() {
     let mut store = create_store();
     let listener: Subscription<State> = |state: &State| {
@@ -34,6 +44,7 @@ pub fn test_game_set_view_for_position() {
     let mut store = create_store();
     
     let listener: Subscription<State> = |state: &State| {
+        
         if (state.validate_test == false) {
             return;
         }

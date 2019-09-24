@@ -31,7 +31,7 @@ impl Default for Game {
 fn set_world(state: &State, world: &World) -> State {
     State {
         prev: state.next.clone(),
-        next: AppState{
+        next: AppState {
             game: Game {
                 views: state.next.game.views.clone(),
                 world: world.clone(),
@@ -46,7 +46,7 @@ fn set_world(state: &State, world: &World) -> State {
 fn set_elapsed_time(state: &State, tick: &f64) -> State {
     State {
         prev: state.next.clone(),
-        next: AppState{
+        next: AppState {
             game: Game {
                 world: state.next.game.world.clone(),
                 views: state.next.game.views.clone(),
