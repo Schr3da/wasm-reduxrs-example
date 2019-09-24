@@ -34,7 +34,8 @@ impl State for Canvas {
         window.clear(Color::WHITE)?;
         
         let state = self.game.state();
-        for tiles in &state.next.game.world.tiles {
+        for tiles in state.next.game.views.values() {
+            
             for t in tiles {
                 match t {
                     Some(t) => { 

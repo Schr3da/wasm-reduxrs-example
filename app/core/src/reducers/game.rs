@@ -2,26 +2,26 @@ use cgmath::Vector2;
 use std::collections::HashMap;
 
 use crate::maps::{Tile, World, templates};
+use crate::utils::collection;
 
 use super::Actions;
 use super::state::{State, AppState, default};
 
-pub static STATIC_VIEWPORT_ITEMS: &'static str = "static_views_items";
-pub static DYNAMIC_VIEWPORT_ITEMS: &'static str = "dynamic_views_items";
+pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
 
 #[derive(Clone)]
 pub struct Game {
     pub elapsed_time: f64,
     pub world: World,
     pub view_position: Vector2<i32>,
-    pub views: HashMap<&'static str, Option<Tile>>,
+    pub views: HashMap<&'static str, Vec<Option<Tile>>>,
 }
 
 impl Default for Game {
     fn default() -> Self {
         Game {
             elapsed_time: 0.,
-            world: World::new(templates::TEMPLE_MAP, 32),
+            world: World::new(templates::TEMPLE_MAP, 1),
             view_position: Vector2::new(0, 0),
             views: HashMap::new(),
         }
@@ -66,22 +66,36 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
   
     let max_x = resolution.x / tile_size.x;
     let max_y = resolution.y / tile_size.y;
+  
+    let mut views: HashMap<&'static str, Vec<Option<Tile>>> = HashMap::new();
+
+    let mut world_view = Vec::new();
     for y in view_position.y .. max_y {
         for x in view_position.x .. max_x {
-            match world_tiles[y as usize][x as usize] {
-                Option::Some(_t) => println!("match"),
-                Option::None => println!("no match"),
-            };
+            let index_x = x as usize;
+            let index_y = y as usize;
+
+            if collection::is_out_of_bounds(y as usize, &world_tiles) == false {
+                continue;
+            }
+
+            if collection::is_out_of_bounds(x as usize, &world_tiles[index_y]) == false {
+                continue;
+            }
+            
+            world_view.push(world_tiles[index_y][index_x]);
         }
     }
+
+    views.insert(STATIC_WORLD_VIEW_ITEMS, world_view);
 
     State {
         prev: state.next.clone(),
         next: AppState {
             game: Game {
                 world: state.next.game.world.clone(),
-                views: state.next.game.views.clone(),
                 view_position: *view_position,
+                views,
                 ..state.next.game
             },
             ..state.next
