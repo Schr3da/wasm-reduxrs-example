@@ -2,13 +2,13 @@ use super::Actions;
 use super::settings::Settings;
 use super::game::Game;
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct AppState{
     pub settings: Settings,
     pub game: Game,
 }
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct State {
     pub validate_test: bool,
     pub prev: AppState,

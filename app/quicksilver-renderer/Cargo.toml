@@ -1,9 +1,0 @@
-[package]
-name = "war-of-empires"
-version = "1.0.0"
-authors = ["Schr3da <strieder.georg@gmail.com>"]
-edition = "2018"
-
-[dependencies]
-quicksilver = "*"
-core = {path = "../core"}

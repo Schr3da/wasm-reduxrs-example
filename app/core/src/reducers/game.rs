@@ -9,7 +9,7 @@ use super::state::{State, default, next};
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Game {
     pub elapsed_time: f64,
     pub world: World,
