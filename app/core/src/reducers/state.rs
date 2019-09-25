@@ -15,6 +15,14 @@ pub struct State {
     pub next: AppState,
 }
 
+pub fn next(state: &State) -> State {
+    State {
+        prev: state.next.clone(),
+        next: state.next.clone(),
+        ..*state
+    }
+}
+
 pub fn default(state: &State) -> State {
     State {
         prev: state.prev.clone(),
@@ -24,12 +32,9 @@ pub fn default(state: &State) -> State {
 }
 
 fn app_validate_test(state: &State, value: &bool) -> State {
-    State {
-        validate_test: *value,
-        prev: state.prev.clone(),
-        next: state.next.clone(),
-        ..*state
-    }
+    let mut next_state = next(state);
+    next_state.validate_test = *value; 
+    next_state
 }
 
 pub fn state_reducer(state: &State, action: &Actions) -> State {

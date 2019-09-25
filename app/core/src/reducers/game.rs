@@ -5,7 +5,7 @@ use crate::maps::{Tile, World, templates};
 use crate::utils::collection;
 
 use super::{Actions, DEFAULT_WORLD_SCALE};
-use super::state::{State, AppState, default};
+use super::state::{State, default, next};
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
 
@@ -31,55 +31,28 @@ impl Default for Game {
 }
 
 fn set_world(state: &State, world: &World) -> State {
-    State {
-        prev: state.next.clone(),
-        next: AppState {
-            game: Game {
-                views: state.next.game.views.clone(),
-                world: world.clone(),
-                ..state.next.game
-            },
-            ..state.next
-        },
-        ..*state
-    }
+    let mut next_state = next(state);
+    next_state.next.game.world = world.clone();
+    next_state = set_view_for_position(&next_state, &Vector2{x: 0, y: 0});
+    next_state
 }
 
 fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
-    State {
-        prev: state.next.clone(),
-        next: AppState {
-            game: Game {
-                world: state.next.game.world.clone(),
-                views: state.next.game.views.clone(),
-                cursor: *cursor,
-                ..state.next.game
-            },
-            ..state.next
-        },
-        ..*state
-    }
+    let mut next_state = next(state);
+    next_state.next.game.cursor = *cursor;
+    next_state
 }
 
 fn handle_key(state: &State, key: &char) -> State {
     println!("key pressed {:?}", key);
-    default(state)
+    let next_state = set_view_for_position(state, &Vector2{x: 0, y: 0});
+    next_state
 }
 
 fn set_elapsed_time(state: &State, tick: &f64) -> State {
-    State {
-        prev: state.next.clone(),
-        next: AppState {
-            game: Game {
-                world: state.next.game.world.clone(),
-                views: state.next.game.views.clone(),
-                elapsed_time: state.next.game.elapsed_time + (*tick),
-                ..state.next.game
-            },
-            ..state.next
-        },
-        ..*state
-    }
+    let mut next_state = next(state);
+    next_state.next.game.elapsed_time = next_state.next.game.elapsed_time + (*tick);
+    next_state    
 }
 
 fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
@@ -92,6 +65,7 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
   
     let mut views: HashMap<&'static str, Vec<Option<Tile>>> = HashMap::new();
 
+    println!("VIEW");
     let mut world_view = Vec::new();
     for y in view_position.y .. (view_position.y + max_y) {
         for x in view_position.x .. (view_position.x + max_x) {
@@ -106,25 +80,18 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
                 break;
             }
             
+            println!("{:?}",world_tiles[index_y][index_x]);
             world_view.push(world_tiles[index_y][index_x]);
         }
     }
 
+    println!("END");
     views.insert(STATIC_WORLD_VIEW_ITEMS, world_view);
-
-    State {
-        prev: state.next.clone(),
-        next: AppState {
-            game: Game {
-                world: state.next.game.world.clone(),
-                view_position: *view_position,
-                views,
-                ..state.next.game
-            },
-            ..state.next
-        },
-        ..*state
-    }
+    
+    let mut next_state = next(state);
+    next_state.next.game.views = views;
+    next_state.next.game.view_position = *view_position;
+    next_state
 }
 
 pub fn game_reducer(state: &State, action: &Actions) -> State {

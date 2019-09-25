@@ -1,7 +1,7 @@
 use crate::theme::ThemeMode;
 use crate::models::geometry::Size;
 
-use super::state::{State, AppState, default};
+use super::state::{State, default, next};
 use super::{Actions, DEFAULT_TILE_SIZE, DEFAULT_RESOLUTION};
 
 #[derive(Copy, Clone, Debug)]
@@ -24,45 +24,21 @@ impl Default for Settings {
 }
 
 fn set_theme_mode(state: &State, mode: &ThemeMode) -> State {
-    State {
-        prev: state.next.clone(),
-        next: AppState {
-            game: state.next.game.clone(),
-            settings: Settings {
-                mode: *mode,
-                ..state.next.settings
-            },
-        },
-        ..*state
-    }
+    let mut next_state = next(state);
+    next_state.next.settings.mode = *mode;
+    next_state    
 }
 
 fn set_scale(state: &State, scale: &i32) -> State {
-    State {
-        prev: state.next.clone(),
-        next: AppState {
-            game: state.next.game.clone(),
-            settings: Settings {
-                scale: *scale,
-                ..state.next.settings
-            },
-        },
-        ..*state
-    }
+    let mut next_state = next(state);
+    next_state.next.settings.scale = *scale;
+    next_state    
 }
 
 fn set_resolution(state: &State, resolution: &Size<i32>) -> State {
-    State {
-        prev: state.next.clone(),
-        next: AppState {
-            game: state.next.game.clone(),
-            settings: Settings {
-                resolution: *resolution,
-                ..state.next.settings
-            },
-        },
-        ..*state
-    }
+    let mut next_state = next(state);
+    next_state.next.settings.resolution = *resolution;
+    next_state    
 }
 
 pub fn settings_reducer(state: &State, action: &Actions) -> State {
