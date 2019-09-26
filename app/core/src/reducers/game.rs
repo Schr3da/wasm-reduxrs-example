@@ -43,7 +43,13 @@ fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
     next_state
 }
 
-fn handle_key(state: &State, key: &char) -> State {
+fn handle_key_up(state: &State, key: &char) -> State {
+    println!("key released {:?}", key);
+    let next_state = set_view_for_position(state, &Vector2{x: 0, y: 0});
+    next_state
+}
+
+fn handle_key_down(state: &State, key: &char) -> State {
     println!("key pressed {:?}", key);
     let next_state = set_view_for_position(state, &Vector2{x: 0, y: 0});
     next_state
@@ -99,7 +105,8 @@ pub fn game_reducer(state: &State, action: &Actions) -> State {
         Actions::GameSetElapsedTime(dt) => set_elapsed_time(state, dt),
         Actions::GameSetWorld(w) => set_world(state, w),
         Actions::GameSetGameCursor(c) => set_cursor(state, c),
-        Actions::GameHandleKey(k) => handle_key(state, k),
+        Actions::GameHandleKeyUp(k) => handle_key_up(state, k),
+        Actions::GameHandleKeyDown(k) => handle_key_down(state, k),
         Actions::GameSetViewForPosition(p) => set_view_for_position(state, p),
         _ => default(state),
     }

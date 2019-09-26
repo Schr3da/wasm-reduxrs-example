@@ -35,8 +35,12 @@ impl Game {
         self.action(Actions::GameSetGameCursor(Vector2{ x, y }));
     }
 
-    pub fn key_pressed(&mut self, key: char) {
-        self.action(Actions::GameHandleKey(key));
+    pub fn key_up(&mut self, key: char) {
+        self.action(Actions::GameHandleKeyUp(key))
+    }
+
+    pub fn key_down(&mut self, key: char) {
+        self.action(Actions::GameHandleKeyDown(key));
     }
 
     pub fn update(&mut self, dt: f64) {
