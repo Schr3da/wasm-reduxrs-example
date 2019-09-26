@@ -5,14 +5,7 @@
   <body>
     <script type="module">
       import init from './pkg/wasm.js';
-
-      async function run() {
-        await init();
-
-        if (result !== 3)
-          throw new Error("wasm addition doesn't work!");
-      }
-
+      let run = async () => await init();
       run();
     </script>
   </body>

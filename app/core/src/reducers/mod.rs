@@ -1,6 +1,6 @@
 pub mod state;
-mod settings;
-mod game;
+pub mod settings;
+pub mod game;
 
 use redux_rs::{Store, combine_reducers};
 use cgmath::Vector2;
