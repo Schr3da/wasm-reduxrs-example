@@ -23,7 +23,7 @@ impl OnChangeCallback {
 impl Default for OnChangeCallback {
     fn default() -> OnChangeCallback {
         let cb = Rc::new(|_: &State| {
-            println!("OnChangeCallback deault called");
+            println!("Set a change callback to retrieve store changes");
         });
         OnChangeCallback::new(cb)
     }
@@ -31,26 +31,26 @@ impl Default for OnChangeCallback {
 
 #[derive(Default, Clone)]
 pub struct State {
-    pub callback: OnChangeCallback,
     pub validate_test: bool,
     pub prev: AppState,
     pub next: AppState,
+    pub on_change: OnChangeCallback,
 }
 
 pub fn next(state: &State) -> State {
     State {
-        callback: state.callback.clone(),
         prev: state.next.clone(),
         next: state.next.clone(),
+        on_change: state.on_change.clone(),
         ..*state
     }
 }
 
 pub fn default(state: &State) -> State {
     State {
-        callback: state.callback.clone(),
         prev: state.prev.clone(),
         next: state.next.clone(),
+        on_change: state.on_change.clone(),
         ..*state
     }
 }
@@ -61,9 +61,9 @@ fn app_validate_test(state: &State, value: &bool) -> State {
     next_state
 }
 
-fn app_set_on_change_callback(state: &State, callback: &OnChangeCallback) -> State {
+fn app_set_on_change_callback(state: &State, cb: &OnChangeCallback) -> State {
     let mut next_state = next(state);
-    next_state.callback = callback.clone(); 
+    next_state.on_change = cb.clone(); 
     next_state
 }
 

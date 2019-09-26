@@ -48,9 +48,7 @@ impl Game {
     }
 
     fn subscribe_to_store_changes(&mut self) {
-        self.store.subscribe(|s: &State| { 
-            s.callback.cb.clone()(s); 
-        });
+        self.store.subscribe(|s: &State| (s.on_change.cb)(s) );
     }
 
 }
