@@ -9,7 +9,7 @@ use crate::maps::World;
 use crate::theme::ThemeMode;
 use crate::models::geometry::Size;
 
-use state::{State, state_reducer};
+use state::{State, OnChangeCallback, state_reducer};
 use settings::settings_reducer;
 use game::game_reducer;
 
@@ -19,6 +19,7 @@ pub static DEFAULT_RESOLUTION: Size<i32> = Size{w: 800, h: 600};
 
 pub enum Actions {
     AppValidateTest(bool),
+    AppSetOnChangeCallback(OnChangeCallback),
     SettingsSetThemeMode(ThemeMode),
     SettingsSetScale(i32),
     SettingsSetResolution(Size<i32>),

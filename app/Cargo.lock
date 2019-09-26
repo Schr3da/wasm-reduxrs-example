@@ -367,6 +367,7 @@ name = "wasm"
 version = "1.0.0"
 dependencies = [
  "core 1.0.0",
+ "js-sys 0.3.27 (registry+https://github.com/rust-lang/crates.io-index)",
  "wasm-bindgen 0.2.50 (registry+https://github.com/rust-lang/crates.io-index)",
  "web-sys 0.3.27 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
