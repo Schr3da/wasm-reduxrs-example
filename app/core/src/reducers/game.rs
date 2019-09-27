@@ -1,11 +1,11 @@
 use cgmath::Vector2;
 use std::collections::HashMap;
 
-use crate::maps::{Tile, World, templates};
+use crate::maps::{templates, Tile, World};
 use crate::utils::collection;
 
+use super::state::{default, next, State};
 use super::{Actions, DEFAULT_WORLD_SCALE};
-use super::state::{State, default, next};
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
 
@@ -33,7 +33,7 @@ impl Default for Game {
 fn set_world(state: &State, world: &World) -> State {
     let mut next_state = next(state);
     next_state.next.game.world = world.clone();
-    next_state = set_view_for_position(&next_state, &Vector2{x: 0, y: 0});
+    next_state = set_view_for_position(&next_state, &Vector2 { x: 0, y: 0 });
     next_state
 }
 
@@ -45,36 +45,35 @@ fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
 
 fn handle_key_up(state: &State, key: &char) -> State {
     println!("key released {:?}", key);
-    let next_state = set_view_for_position(state, &Vector2{x: 0, y: 0});
+    let next_state = set_view_for_position(state, &Vector2 { x: 0, y: 0 });
     next_state
 }
 
 fn handle_key_down(state: &State, key: &char) -> State {
     println!("key pressed {:?}", key);
-    let next_state = set_view_for_position(state, &Vector2{x: 0, y: 0});
+    let next_state = set_view_for_position(state, &Vector2 { x: 0, y: 0 });
     next_state
 }
 
 fn set_elapsed_time(state: &State, tick: &f64) -> State {
     let mut next_state = next(state);
     next_state.next.game.elapsed_time = next_state.next.game.elapsed_time + (*tick);
-    next_state    
+    next_state
 }
 
 fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
-    let resolution = state.next.settings.resolution; 
+    let resolution = state.next.settings.resolution;
     let tile_size = state.next.settings.default_tile_size;
     let world_tiles = &state.next.game.world.tiles;
-  
+
     let max_x = resolution.w / tile_size.w;
     let max_y = resolution.h / tile_size.h;
-  
+
     let mut views: HashMap<&'static str, Vec<Option<Tile>>> = HashMap::new();
 
-    println!("VIEW");
     let mut world_view = Vec::new();
-    for y in view_position.y .. (view_position.y + max_y) {
-        for x in view_position.x .. (view_position.x + max_x) {
+    for y in view_position.y..(view_position.y + max_y) {
+        for x in view_position.x..(view_position.x + max_x) {
             let index_x = x as usize;
             let index_y = y as usize;
 
@@ -85,15 +84,14 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
             if collection::is_out_of_bounds(x as usize, &world_tiles[index_y]) == false {
                 break;
             }
-            
-            println!("{:?}",world_tiles[index_y][index_x]);
+
+            println!("{:?}", world_tiles[index_y][index_x]);
             world_view.push(world_tiles[index_y][index_x]);
         }
     }
 
-    println!("END");
     views.insert(STATIC_WORLD_VIEW_ITEMS, world_view);
-    
+
     let mut next_state = next(state);
     next_state.next.game.views = views;
     next_state.next.game.view_position = *view_position;

@@ -1,4 +1,3 @@
-
 pub static TEMPLE_MAP: &'static str = "
 FFFFFFFFFFWWWWFFFFFFFFFF
 FFM....FFFWWWWFFF....MFF

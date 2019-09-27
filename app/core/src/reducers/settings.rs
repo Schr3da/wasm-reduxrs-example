@@ -1,15 +1,15 @@
-use crate::theme::ThemeMode;
 use crate::models::geometry::Size;
+use crate::theme::ThemeMode;
 
-use super::state::{State, default, next};
-use super::{Actions, DEFAULT_TILE_SIZE, DEFAULT_RESOLUTION};
+use super::state::{default, next, State};
+use super::{Actions, DEFAULT_RESOLUTION, DEFAULT_TILE_SIZE};
 
 #[derive(Copy, Clone, Debug)]
 pub struct Settings {
     pub mode: ThemeMode,
     pub scale: i32,
     pub default_tile_size: Size<i32>,
-    pub resolution: Size<i32>, 
+    pub resolution: Size<i32>,
 }
 
 impl Default for Settings {
@@ -26,19 +26,19 @@ impl Default for Settings {
 fn set_theme_mode(state: &State, mode: &ThemeMode) -> State {
     let mut next_state = next(state);
     next_state.next.settings.mode = *mode;
-    next_state    
+    next_state
 }
 
 fn set_scale(state: &State, scale: &i32) -> State {
     let mut next_state = next(state);
     next_state.next.settings.scale = *scale;
-    next_state    
+    next_state
 }
 
 fn set_resolution(state: &State, resolution: &Size<i32>) -> State {
     let mut next_state = next(state);
     next_state.next.settings.resolution = *resolution;
-    next_state    
+    next_state
 }
 
 pub fn settings_reducer(state: &State, action: &Actions) -> State {

@@ -9,5 +9,3 @@ impl<T> Size<T> {
         Size { w, h }
     }
 }
-
-

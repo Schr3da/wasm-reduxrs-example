@@ -1,19 +1,18 @@
-use redux_rs::Store;
 use cgmath::Vector2;
+use redux_rs::Store;
 
-use crate::reducers::state::{State, OnChangeCallback};
-use crate::reducers::Actions;
 use crate::reducers::create_store;
+use crate::reducers::state::{OnChangeCallback, State};
+use crate::reducers::Actions;
 
 pub struct Game {
     store: Store<State, Actions>,
 }
 
 impl Game {
-
     pub fn new() -> Self {
-        let mut game = Game{
-            store: create_store(), 
+        let mut game = Game {
+            store: create_store(),
         };
         game.init();
         game
@@ -24,7 +23,7 @@ impl Game {
     }
 
     pub fn action(&mut self, action: Actions) {
-        self.store.dispatch(action); 
+        self.store.dispatch(action);
     }
 
     pub fn set_callback(&mut self, cb: OnChangeCallback) {
@@ -32,7 +31,7 @@ impl Game {
     }
 
     pub fn mouse_moved(&mut self, x: i32, y: i32) {
-        self.action(Actions::GameSetGameCursor(Vector2{ x, y }));
+        self.action(Actions::GameSetGameCursor(Vector2 { x, y }));
     }
 
     pub fn key_up(&mut self, key: char) {
@@ -52,7 +51,6 @@ impl Game {
     }
 
     fn subscribe_to_store_changes(&mut self) {
-        self.store.subscribe(|s: &State| (s.on_change.cb)(s) );
+        self.store.subscribe(|s: &State| (s.on_change.cb)(s));
     }
-
 }

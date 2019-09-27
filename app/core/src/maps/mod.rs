@@ -60,27 +60,35 @@ pub struct World {
 }
 
 impl World {
-    pub fn new(template: &'static str, scale: i32) -> Self { 
+    pub fn new(template: &'static str, scale: i32) -> Self {
         let map = Map::new(template);
-        let mapped_tiles = map.tiles.iter().map(|tiles| tiles.iter()
-            .fold(Vec::new(), |mut result: Vec<OptionTile>, t| -> Vec<OptionTile> {
-            match t {
-                Some(v) => {
-                    let position = v.position;
-                    let size = v.size;
+        let mapped_tiles = map
+            .tiles
+            .iter()
+            .map(|tiles| {
+                tiles.iter().fold(
+                    Vec::new(),
+                    |mut result: Vec<OptionTile>, t| -> Vec<OptionTile> {
+                        match t {
+                            Some(v) => {
+                                let position = v.position;
+                                let size = v.size;
 
-                    (0..scale).for_each(|x| {
-                        let x = (position.x * scale + x) * size.w;
-                        let y = position.y * size.h;
-                        let new_pos = Vector2{x, y};
-                        result.push(Tile::new(new_pos.x, new_pos.y, v.symbol));
-                   }); 
-                },
-                None => println!("invalid tile"),
-            };
-            result
-        })).collect::<Vec<Vec<OptionTile>>>();
-        
+                                (0..scale).for_each(|x| {
+                                    let x = (position.x * scale + x) * size.w;
+                                    let y = position.y * size.h;
+                                    let new_pos = Vector2 { x, y };
+                                    result.push(Tile::new(new_pos.x, new_pos.y, v.symbol));
+                                });
+                            }
+                            None => println!("invalid tile"),
+                        };
+                        result
+                    },
+                )
+            })
+            .collect::<Vec<Vec<OptionTile>>>();
+
         World {
             map,
             tiles: mapped_tiles,

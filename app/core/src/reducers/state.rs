@@ -1,18 +1,18 @@
-use super::Actions;
-use super::settings::Settings;
 use super::game::Game;
+use super::settings::Settings;
+use super::Actions;
 
 use std::rc::Rc;
 
 #[derive(Default, Clone, Debug)]
-pub struct AppState{
+pub struct AppState {
     pub settings: Settings,
     pub game: Game,
 }
 
 #[derive(Clone)]
 pub struct OnChangeCallback {
-    pub cb: Rc<dyn Fn(&State)>
+    pub cb: Rc<dyn Fn(&State)>,
 }
 
 impl OnChangeCallback {
@@ -57,16 +57,15 @@ pub fn default(state: &State) -> State {
 
 fn app_validate_test(state: &State, value: &bool) -> State {
     let mut next_state = next(state);
-    next_state.validate_test = *value; 
+    next_state.validate_test = *value;
     next_state
 }
 
 fn app_set_on_change_callback(state: &State, cb: &OnChangeCallback) -> State {
     let mut next_state = next(state);
-    next_state.on_change = cb.clone(); 
+    next_state.on_change = cb.clone();
     next_state
 }
-
 
 pub fn state_reducer(state: &State, action: &Actions) -> State {
     match action {
@@ -75,4 +74,3 @@ pub fn state_reducer(state: &State, action: &Actions) -> State {
         _ => default(state),
     }
 }
-

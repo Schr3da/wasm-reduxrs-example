@@ -1,21 +1,21 @@
-pub mod state;
-pub mod settings;
 pub mod game;
+pub mod settings;
+pub mod state;
 
-use redux_rs::{Store, combine_reducers};
 use cgmath::Vector2;
+use redux_rs::{combine_reducers, Store};
 
 use crate::maps::World;
-use crate::theme::ThemeMode;
 use crate::models::geometry::Size;
+use crate::theme::ThemeMode;
 
-use state::{State, OnChangeCallback, state_reducer};
-use settings::settings_reducer;
 use game::game_reducer;
+use settings::settings_reducer;
+use state::{state_reducer, OnChangeCallback, State};
 
 pub static DEFAULT_WORLD_SCALE: i32 = 2;
-pub static DEFAULT_TILE_SIZE: Size<i32> = Size{w: 16, h: 16};
-pub static DEFAULT_RESOLUTION: Size<i32> = Size{w: 800, h: 600};
+pub static DEFAULT_TILE_SIZE: Size<i32> = Size { w: 16, h: 16 };
+pub static DEFAULT_RESOLUTION: Size<i32> = Size { w: 800, h: 600 };
 
 pub enum Actions {
     AppValidateTest(bool),
