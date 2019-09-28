@@ -39,21 +39,18 @@ pub struct Map {
 
 impl Map {
     pub fn new(template: &'static str) -> Map {
-        let data: Vec<&str> = template
-        .split('\n')
-        .filter(|v| *v != "")
-        .collect();
-        
+        let data: Vec<&str> = template.split('\n').filter(|v| *v != "").collect();
+
         let tiles = data
-        .iter()
-        .enumerate()
-        .map(|(y, d)| {
-            d.chars()
+            .iter()
             .enumerate()
-            .map(|(x, s)| Tile::new(x as i32, y as i32, s))
-            .collect::<OptionTileVec>()
-        })
-        .collect::<Vec<OptionTileVec>>();
+            .map(|(y, d)| {
+                d.chars()
+                    .enumerate()
+                    .map(|(x, s)| Tile::new(x as i32, y as i32, s))
+                    .collect::<OptionTileVec>()
+            })
+            .collect::<Vec<OptionTileVec>>();
 
         Map { template, tiles }
     }
@@ -68,9 +65,11 @@ pub struct World {
 impl World {
     pub fn new(template: &'static str, scale: i32) -> Self {
         let map = Map::new(template);
-        let mapped_tiles = map.tiles.iter()
-        .map(|tiles| tiles.iter().fold(Vec::new(), scale_tiles(scale)))
-        .collect::<Vec<OptionTileVec>>();
+        let mapped_tiles = map
+            .tiles
+            .iter()
+            .map(|tiles| tiles.iter().fold(Vec::new(), scale_tiles(scale)))
+            .collect::<Vec<OptionTileVec>>();
 
         World {
             map,

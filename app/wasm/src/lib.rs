@@ -33,7 +33,6 @@ fn set_size(canvas: &mut HtmlCanvasElement, settings: &Settings) {
 }
 
 fn add_listeners(instance: SharedGameRef) {
-    
     let window = window().unwrap();
 
     let instance_key_down = instance.clone();
@@ -49,7 +48,7 @@ fn add_listeners(instance: SharedGameRef) {
     let handle_key_up = Closure::wrap(Box::new(move |_e: KeyboardEvent| {
         instance_key_up.borrow_mut().key_up('b');
     }) as Box<dyn FnMut(_)>);
-    window 
+    window
         .add_event_listener_with_callback("keydown", handle_key_up.as_ref().unchecked_ref())
         .unwrap();
     handle_key_up.forget();
@@ -66,20 +65,28 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
     OnChangeCallback::new(Rc::new(move |s: &State| {
         for tiles in s.next.game.views.values() {
             for tile in tiles {
-                match tile { 
+                match tile {
                     Some(t) => {
                         context.begin_path();
-                        context.fill_rect(t.position.x as f64, t.position.y as f64, t.size.w as f64, t.size.h as f64);
+                        context.fill_rect(
+                            t.position.x as f64,
+                            t.position.y as f64,
+                            t.size.w as f64,
+                            t.size.h as f64,
+                        );
                         context.set_fill_style(&"red".into());
                         context.fill();
-                   
+
                         context.begin_path();
                         context.move_to(t.position.x as f64, t.position.y as f64);
                         context.line_to(t.position.x as f64, t.position.y as f64 + t.size.w as f64);
-                        context.line_to(t.position.x as f64 + t.size.w as f64, t.position.y as f64 + t.size.h as f64);
+                        context.line_to(
+                            t.position.x as f64 + t.size.w as f64,
+                            t.position.y as f64 + t.size.h as f64,
+                        );
                         context.line_to(t.position.x as f64, t.position.y as f64 + t.size.h as f64);
                         context.set_stroke_style(&"blue".into());
-                        context.stroke(); 
+                        context.stroke();
                     }
                     _ => println!("not a valid tile"),
                 };
@@ -97,6 +104,6 @@ pub fn main() -> Result<(), JsValue> {
 
     instance.as_ref().borrow_mut().set_callback(renderer);
     add_listeners(instance);
-    
+
     Ok(())
 }
