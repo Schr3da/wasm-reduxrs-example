@@ -8,7 +8,6 @@ pub mod models;
 pub mod reducers;
 pub mod theme;
 pub mod units;
-pub mod utils;
 
 #[cfg(test)]
 pub mod tests;

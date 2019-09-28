@@ -2,10 +2,10 @@ use cgmath::Vector2;
 use std::collections::HashMap;
 
 use crate::maps::{templates, Tile, World};
-use crate::utils::collection;
 
 use super::state::{default, next, State};
 use super::{Actions, DEFAULT_WORLD_SCALE};
+use super::utils::is_out_of_bounds;
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
 
@@ -43,14 +43,12 @@ fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
     next_state
 }
 
-fn handle_key_up(state: &State, key: &char) -> State {
-    println!("key released {:?}", key);
+fn handle_key_up(state: &State, _key: &char) -> State {
     let next_state = set_view_for_position(state, &Vector2 { x: 0, y: 0 });
     next_state
 }
 
-fn handle_key_down(state: &State, key: &char) -> State {
-    println!("key pressed {:?}", key);
+fn handle_key_down(state: &State, _key: &char) -> State {
     let next_state = set_view_for_position(state, &Vector2 { x: 0, y: 0 });
     next_state
 }
@@ -77,15 +75,14 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
             let index_x = x as usize;
             let index_y = y as usize;
 
-            if collection::is_out_of_bounds(y as usize, &world_tiles) == false {
+            if is_out_of_bounds(y as usize, &world_tiles) == false {
                 break;
             }
 
-            if collection::is_out_of_bounds(x as usize, &world_tiles[index_y]) == false {
+            if is_out_of_bounds(x as usize, &world_tiles[index_y]) == false {
                 break;
             }
 
-            println!("{:?}", world_tiles[index_y][index_x]);
             world_view.push(world_tiles[index_y][index_x]);
         }
     }

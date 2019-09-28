@@ -1,10 +1,15 @@
 pub mod templates;
+mod utils;
 
 use cgmath::Vector2;
 use std::vec::Vec;
 
 use crate::models::geometry::Size;
 use crate::reducers::DEFAULT_TILE_SIZE;
+use utils::scale_tiles;
+
+pub type OptionTile = Option<Tile>;
+pub type OptionTileVec = Vec<OptionTile>;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Tile {
@@ -26,8 +31,6 @@ impl Tile {
     }
 }
 
-type OptionTile = Option<Tile>;
-
 #[derive(Clone, Debug)]
 pub struct Map {
     pub template: &'static str,
@@ -36,18 +39,21 @@ pub struct Map {
 
 impl Map {
     pub fn new(template: &'static str) -> Map {
-        let data: Vec<&str> = template.split('\n').filter(|v| *v != "").collect();
-
+        let data: Vec<&str> = template
+        .split('\n')
+        .filter(|v| *v != "")
+        .collect();
+        
         let tiles = data
-            .iter()
+        .iter()
+        .enumerate()
+        .map(|(y, d)| {
+            d.chars()
             .enumerate()
-            .map(|(y, d)| {
-                d.chars()
-                    .enumerate()
-                    .map(|(x, s)| Tile::new(x as i32, y as i32, s))
-                    .collect::<Vec<OptionTile>>()
-            })
-            .collect::<Vec<Vec<OptionTile>>>();
+            .map(|(x, s)| Tile::new(x as i32, y as i32, s))
+            .collect::<OptionTileVec>()
+        })
+        .collect::<Vec<OptionTileVec>>();
 
         Map { template, tiles }
     }
@@ -56,38 +62,15 @@ impl Map {
 #[derive(Clone, Debug)]
 pub struct World {
     pub map: Map,
-    pub tiles: Vec<Vec<OptionTile>>,
+    pub tiles: Vec<OptionTileVec>,
 }
 
 impl World {
     pub fn new(template: &'static str, scale: i32) -> Self {
         let map = Map::new(template);
-        let mapped_tiles = map
-            .tiles
-            .iter()
-            .map(|tiles| {
-                tiles.iter().fold(
-                    Vec::new(),
-                    |mut result: Vec<OptionTile>, t| -> Vec<OptionTile> {
-                        match t {
-                            Some(v) => {
-                                let position = v.position;
-                                let size = v.size;
-
-                                (0..scale).for_each(|x| {
-                                    let x = (position.x * scale + x) * size.w;
-                                    let y = position.y * size.h;
-                                    let new_pos = Vector2 { x, y };
-                                    result.push(Tile::new(new_pos.x, new_pos.y, v.symbol));
-                                });
-                            }
-                            None => println!("invalid tile"),
-                        };
-                        result
-                    },
-                )
-            })
-            .collect::<Vec<Vec<OptionTile>>>();
+        let mapped_tiles = map.tiles.iter()
+        .map(|tiles| tiles.iter().fold(Vec::new(), scale_tiles(scale)))
+        .collect::<Vec<OptionTileVec>>();
 
         World {
             map,
