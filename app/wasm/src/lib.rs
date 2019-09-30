@@ -68,16 +68,17 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
                 match tile {
                     Some(t) => {
                         context.begin_path();
+                        context.set_fill_style(&"transparent".into());
                         context.fill_rect(
                             t.position.x as f64,
                             t.position.y as f64,
                             t.size.w as f64,
                             t.size.h as f64,
                         );
-                        context.set_fill_style(&"red".into());
                         context.fill();
-
+/*
                         context.begin_path();
+                        context.set_stroke_style(&"blue".into());
                         context.move_to(t.position.x as f64, t.position.y as f64);
                         context.line_to(t.position.x as f64, t.position.y as f64 + t.size.w as f64);
                         context.line_to(
@@ -85,8 +86,13 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
                             t.position.y as f64 + t.size.h as f64,
                         );
                         context.line_to(t.position.x as f64, t.position.y as f64 + t.size.h as f64);
-                        context.set_stroke_style(&"blue".into());
                         context.stroke();
+*/
+                        context.set_fill_style(&"black".into());
+                        context.set_stroke_style(&"blue".into());
+                        context.set_text_align(&"center");
+                        context.set_font(&"10px Arial");
+                        context.fill_text(&t.symbol.to_string(), t.position.x as f64 + 8.0, t.position.y as f64 + 12.0).unwrap();
                     }
                     _ => println!("not a valid tile"),
                 };

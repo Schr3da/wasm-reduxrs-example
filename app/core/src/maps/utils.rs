@@ -1,7 +1,7 @@
 use super::{OptionTile, OptionTileVec, Tile};
 use cgmath::Vector2;
 
-fn scale_tile_in_x_direction(scale: i32, t: &Tile) -> Vec<OptionTile> {
+fn scale_tile_in_x_direction(scale: i32, t: &Tile) -> OptionTileVec {
     let mut tiles: OptionTileVec = Vec::new();
     let position = t.position;
     let size = t.size;
@@ -16,10 +16,21 @@ fn scale_tile_in_x_direction(scale: i32, t: &Tile) -> Vec<OptionTile> {
     tiles
 }
 
-fn scale_tile_in_y_direction(scale: i32, _t: &Tile) -> OptionTileVec {
+fn scale_tile_in_y_direction(scale: i32, x_tiles: &OptionTileVec) -> OptionTileVec {
     let mut tiles: OptionTileVec = Vec::new();
 
-    (0..scale).for_each(|x| {});
+    (0..scale).for_each(|y| {
+        x_tiles.iter().for_each(|t| {
+            match t {
+                Some(v) => {
+                    let x = v.position.x;
+                    let y = v.position.y * y;
+                    tiles.push(Tile::new(x, y, v.symbol)); 
+                },
+                _ => println!("Invalid tile"),
+            };
+        }); 
+    });
 
     tiles
 }
@@ -29,10 +40,9 @@ pub fn scale_tiles(scale: i32) -> Box<dyn FnMut(OptionTileVec, &OptionTile) -> O
         move |mut result: OptionTileVec, t: &OptionTile| -> OptionTileVec {
             match t {
                 Some(v) => {
-                    let mut x_tiles = scale_tile_in_x_direction(scale, &v);
-                    let mut y_tiles = scale_tile_in_y_direction(scale, &v);
-                    result.append(&mut x_tiles);
-                    result.append(&mut y_tiles);
+                    let mut tiles = scale_tile_in_x_direction(scale, &v);
+                    //tiles = scale_tile_in_y_direction(scale, &tiles);
+                    result.append(&mut tiles);
                 }
                 None => println!("invalid tile"),
             };
