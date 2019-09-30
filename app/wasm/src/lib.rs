@@ -2,7 +2,7 @@ extern crate core;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{window, HtmlCanvasElement, KeyboardEvent};
+use web_sys::{console, window, HtmlCanvasElement, KeyboardEvent};
 
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
@@ -67,6 +67,7 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
             for tile in tiles {
                 match tile {
                     Some(t) => {
+                        
                         context.begin_path();
                         context.set_fill_style(&"transparent".into());
                         context.fill_rect(

@@ -6,7 +6,7 @@ use std::vec::Vec;
 
 use crate::models::geometry::Size;
 use crate::reducers::DEFAULT_TILE_SIZE;
-use utils::scale_tiles;
+use utils::{scale_tiles_x_direction, scale_tiles_y_direction};
 
 pub type OptionTile = Option<Tile>;
 pub type OptionTileVec = Vec<OptionTile>;
@@ -65,15 +65,24 @@ pub struct World {
 impl World {
     pub fn new(template: &'static str, scale: i32) -> Self {
         let map = Map::new(template);
-        let mapped_tiles = map
+       
+        let scaled_x_tiles = map
             .tiles
             .iter()
-            .map(|tiles| tiles.iter().fold(Vec::new(), scale_tiles(scale)))
+            .map(|tiles| tiles.iter().fold(Vec::new(), scale_tiles_x_direction(scale)))
             .collect::<Vec<OptionTileVec>>();
+
+        let scaled_y_tiles = scaled_x_tiles
+            .iter()
+            .fold(Vec::new(), scale_tiles_y_direction(scale));
+
+        scaled_y_tiles.iter().for_each(|a| {
+            println!("{:?}\n", a);
+        });
 
         World {
             map,
-            tiles: mapped_tiles,
+            tiles: scaled_y_tiles,
         }
     }
 }
