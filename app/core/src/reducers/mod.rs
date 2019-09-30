@@ -15,7 +15,7 @@ use game::game_reducer;
 use settings::settings_reducer;
 use state::{state_reducer, OnChangeCallback, State};
 
-pub static DEFAULT_WORLD_SCALE: i32 = 4;
+pub static DEFAULT_WORLD_SCALE: i32 = 5;
 pub static DEFAULT_TILE_SIZE: Size<i32> = Size { w: 16, h: 16 };
 pub static DEFAULT_RESOLUTION: Size<i32> = Size { w: 800, h: 600 };
 
@@ -30,7 +30,6 @@ pub enum Actions {
     GameSetElapsedTime(f64),
     GameSetGameCursor(Vector2<i32>),
     GameSetWorld(World),
-    GameSetViewForPosition(Vector2<i32>),
 }
 
 pub fn create_store() -> Store<State, Actions> {

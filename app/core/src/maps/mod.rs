@@ -65,20 +65,20 @@ pub struct World {
 impl World {
     pub fn new(template: &'static str, scale: i32) -> Self {
         let map = Map::new(template);
-       
+
         let scaled_x_tiles = map
             .tiles
             .iter()
-            .map(|tiles| tiles.iter().fold(Vec::new(), scale_tiles_x_direction(scale)))
+            .map(|tiles| {
+                tiles
+                    .iter()
+                    .fold(Vec::new(), scale_tiles_x_direction(scale))
+            })
             .collect::<Vec<OptionTileVec>>();
 
         let scaled_y_tiles = scaled_x_tiles
             .iter()
             .fold(Vec::new(), scale_tiles_y_direction(scale));
-
-        scaled_y_tiles.iter().for_each(|a| {
-            println!("{:?}\n", a);
-        });
 
         World {
             map,

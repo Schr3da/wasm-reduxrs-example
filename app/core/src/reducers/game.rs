@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use crate::maps::{templates, Tile, World};
 
 use super::state::{default, next, State};
-use super::utils::tiles_for_world_view;
+use super::utils::{calculate_translation_for_view_position, tiles_for_world_view};
 use super::{Actions, DEFAULT_WORLD_SCALE};
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
@@ -16,6 +16,7 @@ pub struct Game {
     pub cursor: Vector2<i32>,
     pub view_position: Vector2<i32>,
     pub views: HashMap<&'static str, Vec<Option<Tile>>>,
+    pub translation: Vector2<i32>,
 }
 
 impl Default for Game {
@@ -26,6 +27,7 @@ impl Default for Game {
             cursor: Vector2 { x: 0, y: 0 },
             view_position: Vector2::new(0, 0),
             views: HashMap::new(),
+            translation: Vector2 { x: 0, y: 0 },
         }
     }
 }
@@ -45,17 +47,28 @@ fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
 
 fn handle_key_up(state: &State, key: &String) -> State {
     match key.as_ref() {
-        "w" => set_view_for_position(state, &(state.next.game.view_position + Vector2{ x: 0, y: 1 })),
-        "d" => set_view_for_position(state, &(state.next.game.view_position + Vector2{ x: 1, y: 0 })),
-        "s" => set_view_for_position(state, &(state.next.game.view_position - Vector2{ x: 0, y: 1 })),
-        "a" => set_view_for_position(state, &(state.next.game.view_position - Vector2{ x: 1, y: 0 })),
+        "w" => set_view_for_position(
+            state,
+            &(state.next.game.view_position - Vector2 { x: 0, y: 1 }),
+        ),
+        "d" => set_view_for_position(
+            state,
+            &(state.next.game.view_position + Vector2 { x: 1, y: 0 }),
+        ),
+        "s" => set_view_for_position(
+            state,
+            &(state.next.game.view_position + Vector2 { x: 0, y: 1 }),
+        ),
+        "a" => set_view_for_position(
+            state,
+            &(state.next.game.view_position - Vector2 { x: 1, y: 0 }),
+        ),
         _ => default(state),
     }
 }
 
 fn handle_key_down(state: &State, _key: &str) -> State {
-    let next_state = set_view_for_position(state, &Vector2 { x: 0, y: 0 });
-    next_state
+    default(&state)
 }
 
 fn set_elapsed_time(state: &State, tick: &f64) -> State {
@@ -65,14 +78,17 @@ fn set_elapsed_time(state: &State, tick: &f64) -> State {
 }
 
 fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
+    let mut next_state = next(state);
+
     let mut views: HashMap<&'static str, Vec<Option<Tile>>> = HashMap::new();
     let world_view = tiles_for_world_view(state, view_position);
-
+    
     views.insert(STATIC_WORLD_VIEW_ITEMS, world_view);
 
-    let mut next_state = next(state);
     next_state.next.game.views = views;
     next_state.next.game.view_position = *view_position;
+    next_state.next.game.translation =
+        calculate_translation_for_view_position(&next_state, view_position);
     next_state
 }
 
@@ -83,7 +99,6 @@ pub fn game_reducer(state: &State, action: &Actions) -> State {
         Actions::GameSetGameCursor(c) => set_cursor(state, c),
         Actions::GameHandleKeyUp(k) => handle_key_up(state, k),
         Actions::GameHandleKeyDown(k) => handle_key_down(state, k),
-        Actions::GameSetViewForPosition(p) => set_view_for_position(state, p),
         _ => default(state),
     }
 }

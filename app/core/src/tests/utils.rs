@@ -1,5 +1,5 @@
-use crate::maps::World;
 use crate::maps::templates::TEMPLE_MAP;
+use crate::maps::World;
 
 #[test]
 fn test_world_scaling() {
@@ -8,4 +8,3 @@ fn test_world_scaling() {
     let count = w.map.tiles.len() as i32;
     assert_eq!(scale * scale * count, count);
 }
-

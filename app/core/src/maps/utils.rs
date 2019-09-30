@@ -1,6 +1,8 @@
 use super::{OptionTile, OptionTileVec, Tile};
 
-pub fn scale_tiles_x_direction(scale: i32) -> Box<dyn FnMut(OptionTileVec, &OptionTile) -> OptionTileVec> {
+pub fn scale_tiles_x_direction(
+    scale: i32,
+) -> Box<dyn FnMut(OptionTileVec, &OptionTile) -> OptionTileVec> {
     Box::new(
         move |mut result: OptionTileVec, tile: &OptionTile| -> OptionTileVec {
             match tile {
@@ -10,7 +12,7 @@ pub fn scale_tiles_x_direction(scale: i32) -> Box<dyn FnMut(OptionTileVec, &Opti
                         let y = t.position.y;
                         result.push(Tile::new(x, y, t.symbol));
                     });
-                },
+                }
                 None => println!("invalid tile"),
             };
             result
@@ -18,7 +20,9 @@ pub fn scale_tiles_x_direction(scale: i32) -> Box<dyn FnMut(OptionTileVec, &Opti
     )
 }
 
-pub fn scale_tiles_y_direction(scale: i32) -> Box<dyn FnMut(Vec<OptionTileVec>, &OptionTileVec) -> Vec<OptionTileVec>> {
+pub fn scale_tiles_y_direction(
+    scale: i32,
+) -> Box<dyn FnMut(Vec<OptionTileVec>, &OptionTileVec) -> Vec<OptionTileVec>> {
     Box::new(
         move |mut result: Vec<OptionTileVec>, tiles: &OptionTileVec| -> Vec<OptionTileVec> {
             (0..scale).for_each(|index| {
@@ -28,8 +32,8 @@ pub fn scale_tiles_y_direction(scale: i32) -> Box<dyn FnMut(Vec<OptionTileVec>, 
                             let x = v.position.x;
                             let y = (v.position.y * scale + index) * v.size.h;
                             scaled_tiles.push(Tile::new(x, y, v.symbol))
-                        },
-                        _ => println!("Invalid tile"), 
+                        }
+                        _ => println!("Invalid tile"),
                     };
                     scaled_tiles
                 });

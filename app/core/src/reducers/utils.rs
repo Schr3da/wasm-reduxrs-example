@@ -7,6 +7,17 @@ fn is_out_of_bounds<T>(index: usize, array: &Vec<T>) -> bool {
     index < length
 }
 
+pub fn calculate_translation_for_view_position(
+    state: &State,
+    view_position: &Vector2<i32>,
+) -> Vector2<i32> {
+    let tile_size = state.next.settings.default_tile_size;
+    Vector2 {
+        x: view_position.x * tile_size.w,
+        y: view_position.y * tile_size.h,
+    }
+}
+
 pub fn tiles_for_world_view(state: &State, view_position: &Vector2<i32>) -> OptionTileVec {
     let resolution = state.next.settings.resolution;
     let tile_size = state.next.settings.default_tile_size;

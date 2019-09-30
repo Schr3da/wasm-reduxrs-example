@@ -2,7 +2,7 @@ extern crate core;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{window, HtmlCanvasElement, KeyboardEvent};
+use web_sys::{console, window, HtmlCanvasElement, KeyboardEvent};
 
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
@@ -63,19 +63,20 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
         .unwrap();
 
     OnChangeCallback::new(Rc::new(move |s: &State| {
+        context.set_transform(1.0, 0.0, 0.0, 1.0, 0.5, 0.5).unwrap();
+
+        let resolution = s.next.settings.resolution;
+        context.clear_rect(0.0, 0.0, resolution.w as f64, resolution.h as f64);
         
-        context.clear_rect(
-            0.,
-            0.,
-            s.next.settings.resolution.w as f64,
-            s.next.settings.resolution.h as f64
-        ); 
+        let translation = s.next.game.translation;
+        context
+            .translate(-translation.x as f64, -translation.y as f64)
+            .unwrap();
 
         for tiles in s.next.game.views.values() {
             for tile in tiles {
                 match tile {
                     Some(t) => {
-
                         context.begin_path();
                         context.set_fill_style(&"transparent".into());
                         context.fill_rect(
@@ -90,12 +91,19 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
                         context.set_stroke_style(&"blue".into());
                         context.set_text_align(&"center");
                         context.set_font(&"12px Arial");
-                        context.fill_text(&t.symbol.to_string(), t.position.x as f64 + 8.0, t.position.y as f64 + 12.0).unwrap();
+                        context
+                            .fill_text(
+                                &t.symbol.to_string(),
+                                t.position.x as f64 + 8.0,
+                                t.position.y as f64 + 12.0,
+                            )
+                            .unwrap();
                     }
                     _ => println!("not a valid tile"),
                 };
             }
         }
+
     }))
 }
 
