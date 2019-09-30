@@ -34,11 +34,11 @@ impl Game {
         self.action(Actions::GameSetGameCursor(Vector2 { x, y }));
     }
 
-    pub fn key_up(&mut self, key: char) {
+    pub fn key_up(&mut self, key: String) {
         self.action(Actions::GameHandleKeyUp(key))
     }
 
-    pub fn key_down(&mut self, key: char) {
+    pub fn key_down(&mut self, key: String) {
         self.action(Actions::GameHandleKeyDown(key));
     }
 

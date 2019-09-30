@@ -43,12 +43,17 @@ fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
     next_state
 }
 
-fn handle_key_up(state: &State, _key: &char) -> State {
-    let next_state = set_view_for_position(state, &Vector2 { x: 0, y: 0 });
-    next_state
+fn handle_key_up(state: &State, key: &String) -> State {
+    match key.as_ref() {
+        "w" => set_view_for_position(state, &(state.next.game.view_position + Vector2{ x: 0, y: 1 })),
+        "d" => set_view_for_position(state, &(state.next.game.view_position + Vector2{ x: 1, y: 0 })),
+        "s" => set_view_for_position(state, &(state.next.game.view_position - Vector2{ x: 0, y: 1 })),
+        "a" => set_view_for_position(state, &(state.next.game.view_position - Vector2{ x: 1, y: 0 })),
+        _ => default(state),
+    }
 }
 
-fn handle_key_down(state: &State, _key: &char) -> State {
+fn handle_key_down(state: &State, _key: &str) -> State {
     let next_state = set_view_for_position(state, &Vector2 { x: 0, y: 0 });
     next_state
 }
