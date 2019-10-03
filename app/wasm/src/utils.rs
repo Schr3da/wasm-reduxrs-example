@@ -1,5 +1,5 @@
-use web_sys::CanvasRenderingContext2d;
 use crate::core::reducers::state::State;
+use web_sys::CanvasRenderingContext2d;
 
 pub fn draw_world(context: &CanvasRenderingContext2d, state: &State) {
     for tiles in state.next.game.views.values() {

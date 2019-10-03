@@ -4,7 +4,7 @@ mod utils;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{window, HtmlCanvasElement, CanvasRenderingContext2d, KeyboardEvent};
+use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent};
 
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
@@ -71,12 +71,12 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
 
         let resolution = s.next.settings.resolution;
         context.clear_rect(0.0, 0.0, resolution.w as f64, resolution.h as f64);
-        
+
         let translation = s.next.game.translation;
         context
             .translate(-translation.x as f64, -translation.y as f64)
             .unwrap();
-        
+
         draw_world(&context, s);
     }))
 }
