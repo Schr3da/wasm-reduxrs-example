@@ -1,12 +1,16 @@
 extern crate core;
 
+mod utils;
+
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{console, window, HtmlCanvasElement, KeyboardEvent};
+use web_sys::{window, HtmlCanvasElement, CanvasRenderingContext2d, KeyboardEvent};
 
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
 use crate::core::reducers::state::{OnChangeCallback, State};
+use utils::draw_world;
+
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -59,7 +63,7 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
         .get_context("2d")
         .unwrap()
         .unwrap()
-        .dyn_into::<web_sys::CanvasRenderingContext2d>()
+        .dyn_into::<CanvasRenderingContext2d>()
         .unwrap();
 
     OnChangeCallback::new(Rc::new(move |s: &State| {
@@ -72,38 +76,8 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
         context
             .translate(-translation.x as f64, -translation.y as f64)
             .unwrap();
-
-        for tiles in s.next.game.views.values() {
-            for tile in tiles {
-                match tile {
-                    Some(t) => {
-                        context.begin_path();
-                        context.set_fill_style(&"transparent".into());
-                        context.fill_rect(
-                            t.position.x as f64,
-                            t.position.y as f64,
-                            t.size.w as f64,
-                            t.size.h as f64,
-                        );
-                        context.fill();
-
-                        context.set_fill_style(&"black".into());
-                        context.set_stroke_style(&"blue".into());
-                        context.set_text_align(&"center");
-                        context.set_font(&"12px Arial");
-                        context
-                            .fill_text(
-                                &t.symbol.to_string(),
-                                t.position.x as f64 + 8.0,
-                                t.position.y as f64 + 12.0,
-                            )
-                            .unwrap();
-                    }
-                    _ => println!("not a valid tile"),
-                };
-            }
-        }
-
+        
+        draw_world(&context, s);
     }))
 }
 
