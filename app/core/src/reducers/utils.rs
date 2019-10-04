@@ -16,7 +16,15 @@ fn max_tiles_to_render(state: &State) -> (i32, i32) {
     (max_x, max_y)
 }
 
-pub fn consider_scroll_limits(state: &State, next: &Vector2<i32>) -> Vector2<i32> {
+pub fn consider_cursor_resolution_limits(state: &State, cursor: Vector2<i32>) -> Vector2<i32> {
+    let (max_x, max_y) = max_tiles_to_render(state);
+    if cursor.x < 0 || cursor.x > max_x || cursor.y < 0 || cursor.y > max_y {
+        return state.next.game.cursor;
+    }
+    return cursor;
+}
+
+pub fn consider_scroll_limits(state: &State, next: Vector2<i32>) -> Vector2<i32> {
     let world_tiles = &state.next.game.world.tiles;
     let prev = state.next.game.view_position.clone();
     let (max_x, max_y) = max_tiles_to_render(state);
@@ -32,7 +40,7 @@ pub fn consider_scroll_limits(state: &State, next: &Vector2<i32>) -> Vector2<i32
         return prev;
     }
 
-    return next.clone();
+    return next;
 }
 
 pub fn calculate_translation_for_view_position(

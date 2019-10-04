@@ -5,7 +5,8 @@ use crate::maps::{templates, Tile, World};
 
 use super::state::{default, next, State};
 use super::utils::{
-    calculate_translation_for_view_position, consider_scroll_limits, tiles_for_world_view,
+    calculate_translation_for_view_position, consider_cursor_resolution_limits,
+    consider_scroll_limits, tiles_for_world_view,
 };
 use super::{Actions, DEFAULT_WORLD_SCALE};
 
@@ -38,7 +39,7 @@ fn start_new_game(state: &State) -> State {
     let mut next_state = next(state);
     let view_position = next_state.next.game.view_position;
     next_state.next.game = Game::default();
-    next_state = set_view_for_position(&next_state, &view_position);
+    next_state = set_view_for_position(&next_state, view_position);
     next_state
 }
 
@@ -48,23 +49,23 @@ fn set_elapsed_time(state: &State, tick: &i32) -> State {
     next_state
 }
 
-fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
+fn set_cursor(state: &State, cursor: Vector2<i32>) -> State {
     let mut next_state = next(state);
-    next_state.next.game.cursor = *cursor;
+    next_state.next.game.cursor = consider_cursor_resolution_limits(&state, cursor);
     next_state
 }
 
 fn set_world(state: &State, world: &World) -> State {
     let mut next_state = next(state);
     next_state.next.game.world = world.clone();
-    next_state = set_view_for_position(&next_state, &Vector2 { x: 0, y: 0 });
+    next_state = set_view_for_position(&next_state, Vector2 { x: 0, y: 0 });
     next_state
 }
 
-fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
+fn set_view_for_position(state: &State, view_position: Vector2<i32>) -> State {
     let mut next_state = next(state);
 
-    let next_view_position = consider_scroll_limits(&state, &view_position);
+    let next_view_position = consider_scroll_limits(&state, view_position);
 
     let mut views: HashMap<&'static str, Vec<Option<Tile>>> = HashMap::new();
     let world_view = tiles_for_world_view(state, &next_view_position);
@@ -83,14 +84,14 @@ fn handle_key_up(state: &State, key: &String) -> State {
     let cursor = state.next.game.cursor;
 
     match key.as_ref() {
-        "w" => set_cursor(state, &(cursor - Vector2 { x: 0, y: 1 })),
-        "d" => set_cursor(state, &(cursor - Vector2 { x: 1, y: 0 })),
-        "s" => set_cursor(state, &(cursor - Vector2 { x: 0, y: 1 })),
-        "a" => set_cursor(state, &(cursor - Vector2 { x: 1, y: 0 })),
-        "ArrowUp" => set_view_for_position(state, &(view_position - Vector2 { x: 0, y: 1 })),
-        "ArrowRight" => set_view_for_position(state, &(view_position + Vector2 { x: 1, y: 0 })),
-        "ArrowDown" => set_view_for_position(state, &(view_position + Vector2 { x: 0, y: 1 })),
-        "ArrowLeft" => set_view_for_position(state, &(view_position - Vector2 { x: 1, y: 0 })),
+        "w" => set_cursor(state, cursor - Vector2 { x: 0, y: 1 }),
+        "d" => set_cursor(state, cursor + Vector2 { x: 1, y: 0 }),
+        "s" => set_cursor(state, cursor + Vector2 { x: 0, y: 1 }),
+        "a" => set_cursor(state, cursor - Vector2 { x: 1, y: 0 }),
+        "ArrowUp" => set_view_for_position(state, view_position - Vector2 { x: 0, y: 1 }),
+        "ArrowRight" => set_view_for_position(state, view_position + Vector2 { x: 1, y: 0 }),
+        "ArrowDown" => set_view_for_position(state, view_position + Vector2 { x: 0, y: 1 }),
+        "ArrowLeft" => set_view_for_position(state, view_position - Vector2 { x: 1, y: 0 }),
         _ => default(state),
     }
 }
@@ -104,7 +105,7 @@ pub fn game_reducer(state: &State, action: &Actions) -> State {
         Actions::GameStartNew() => start_new_game(state),
         Actions::GameSetElapsedTime(dt) => set_elapsed_time(state, dt),
         Actions::GameSetWorld(w) => set_world(state, w),
-        Actions::GameSetGameCursor(c) => set_cursor(state, c),
+        Actions::GameSetGameCursor(c) => set_cursor(state, *c),
         Actions::GameHandleKeyUp(k) => handle_key_up(state, k),
         Actions::GameHandleKeyDown(k) => handle_key_down(state, k),
         _ => default(state),

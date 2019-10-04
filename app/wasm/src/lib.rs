@@ -2,11 +2,11 @@ extern crate core;
 
 mod utils;
 
+use std::cell::RefCell;
+use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent};
-use std::cell::RefCell;
-use std::rc::Rc;
 
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
