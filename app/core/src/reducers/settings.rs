@@ -7,6 +7,7 @@ use super::{Actions, DEFAULT_RESOLUTION, DEFAULT_TILE_SIZE};
 #[derive(Copy, Clone, Debug)]
 pub struct Settings {
     pub mode: ThemeMode,
+    pub update_interval: i32,
     pub scale: i32,
     pub default_tile_size: Size<i32>,
     pub resolution: Size<i32>,
@@ -18,6 +19,7 @@ impl Default for Settings {
             default_tile_size: DEFAULT_TILE_SIZE,
             resolution: DEFAULT_RESOLUTION,
             mode: ThemeMode::LIGHT,
+            update_interval: 100,
             scale: 1,
         }
     }

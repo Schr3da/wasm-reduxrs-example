@@ -46,8 +46,10 @@ impl Game {
         self.action(Actions::GameHandleKeyDown(key));
     }
 
-    pub fn update(&mut self, dt: f64) {
-        self.action(Actions::GameSetElapsedTime(dt));
+    pub fn update(&mut self) {
+        let state = self.state();
+        let update_interval = state.next.settings.update_interval;
+        self.action(Actions::GameSetElapsedTime(update_interval));
     }
 
     pub fn state(&self) -> &State {

@@ -58,7 +58,25 @@ fn add_listeners(instance: SharedGameRef) {
     handle_key_up.forget();
 }
 
-fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
+fn update(instance: SharedGameRef) -> Result<i32, JsValue> {
+    let game = instance.clone();
+    let cb = Closure::wrap(Box::new(move || game.as_ref().borrow_mut().update()) as Box<dyn Fn()>);
+
+    let state = instance.as_ref().borrow().state().clone();
+
+    let update_interval = state.next.settings.update_interval;
+    let id = window()
+        .unwrap()
+        .set_interval_with_callback_and_timeout_and_arguments_0(
+            cb.as_ref().unchecked_ref(),
+            update_interval,
+        )?;
+    cb.forget();
+
+    Ok(id)
+}
+
+fn render(canvas: &HtmlCanvasElement) -> OnChangeCallback {
     let context = canvas
         .get_context("2d")
         .unwrap()
@@ -87,7 +105,8 @@ pub fn main() -> Result<(), JsValue> {
     instance.as_ref().borrow_mut().start_new_game();
 
     let canvas = create_canvas(instance.clone())?;
-    let renderer = render_changes(&canvas);
+    let _interval = update(instance.clone());
+    let renderer = render(&canvas);
 
     instance.as_ref().borrow_mut().set_callback(renderer);
     add_listeners(instance);

@@ -10,11 +10,10 @@ use super::utils::{
 use super::{Actions, DEFAULT_WORLD_SCALE};
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
-pub static DYNAMIC_CURSOR_VIEW: &'static str = "dynamic_cursor_view";
 
 #[derive(Clone, Debug)]
 pub struct Game {
-    pub elapsed_time: f64,
+    pub elapsed_time: i32,
     pub world: World,
     pub cursor: Vector2<i32>,
     pub view_position: Vector2<i32>,
@@ -25,7 +24,7 @@ pub struct Game {
 impl Default for Game {
     fn default() -> Self {
         Game {
-            elapsed_time: 0.,
+            elapsed_time: 0,
             world: World::new(templates::TEMPLE_MAP, DEFAULT_WORLD_SCALE),
             cursor: Vector2 { x: 0, y: 0 },
             view_position: Vector2::new(0, 0),
@@ -38,11 +37,12 @@ impl Default for Game {
 fn start_new_game(state: &State) -> State {
     let mut next_state = next(state);
     let view_position = next_state.next.game.view_position;
-    next_state.next.game = Game::default();    
-    set_view_for_position(&next_state, &view_position)
+    next_state.next.game = Game::default();
+    next_state = set_view_for_position(&next_state, &view_position);
+    next_state
 }
 
-fn set_elapsed_time(state: &State, tick: &f64) -> State {
+fn set_elapsed_time(state: &State, tick: &i32) -> State {
     let mut next_state = next(state);
     next_state.next.game.elapsed_time = next_state.next.game.elapsed_time + (*tick);
     next_state
@@ -73,7 +73,8 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
 
     next_state.next.game.views = views;
     next_state.next.game.view_position = next_view_position;
-    next_state.next.game.translation = calculate_translation_for_view_position(&next_state, &next_view_position);
+    next_state.next.game.translation =
+        calculate_translation_for_view_position(&next_state, &next_view_position);
     next_state
 }
 

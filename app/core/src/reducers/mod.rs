@@ -28,7 +28,7 @@ pub enum Actions {
     GameStartNew(),
     GameHandleKeyUp(String),
     GameHandleKeyDown(String),
-    GameSetElapsedTime(f64),
+    GameSetElapsedTime(i32),
     GameSetGameCursor(Vector2<i32>),
     GameSetWorld(World),
 }
