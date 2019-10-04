@@ -25,6 +25,7 @@ pub enum Actions {
     SettingsSetThemeMode(ThemeMode),
     SettingsSetScale(i32),
     SettingsSetResolution(Size<i32>),
+    GameStartNew(),
     GameHandleKeyUp(String),
     GameHandleKeyDown(String),
     GameSetElapsedTime(f64),

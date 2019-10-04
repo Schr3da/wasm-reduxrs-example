@@ -10,6 +10,7 @@ use super::utils::{
 use super::{Actions, DEFAULT_WORLD_SCALE};
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
+pub static DYNAMIC_CURSOR_VIEW: &'static str = "dynamic_cursor_view";
 
 #[derive(Clone, Debug)]
 pub struct Game {
@@ -34,10 +35,16 @@ impl Default for Game {
     }
 }
 
-fn set_world(state: &State, world: &World) -> State {
+fn start_new_game(state: &State) -> State {
     let mut next_state = next(state);
-    next_state.next.game.world = world.clone();
-    next_state = set_view_for_position(&next_state, &Vector2 { x: 0, y: 0 });
+    let view_position = next_state.next.game.view_position;
+    next_state.next.game = Game::default();    
+    set_view_for_position(&next_state, &view_position)
+}
+
+fn set_elapsed_time(state: &State, tick: &f64) -> State {
+    let mut next_state = next(state);
+    next_state.next.game.elapsed_time = next_state.next.game.elapsed_time + (*tick);
     next_state
 }
 
@@ -47,24 +54,10 @@ fn set_cursor(state: &State, cursor: &Vector2<i32>) -> State {
     next_state
 }
 
-fn handle_key_up(state: &State, key: &String) -> State {
-    let view_position = state.next.game.view_position;
-    match key.as_ref() {
-        "w" => set_view_for_position(state, &(view_position - Vector2 { x: 0, y: 1 })),
-        "d" => set_view_for_position(state, &(view_position + Vector2 { x: 1, y: 0 })),
-        "s" => set_view_for_position(state, &(view_position + Vector2 { x: 0, y: 1 })),
-        "a" => set_view_for_position(state, &(view_position - Vector2 { x: 1, y: 0 })),
-        _ => default(state),
-    }
-}
-
-fn handle_key_down(state: &State, _key: &str) -> State {
-    default(&state)
-}
-
-fn set_elapsed_time(state: &State, tick: &f64) -> State {
+fn set_world(state: &State, world: &World) -> State {
     let mut next_state = next(state);
-    next_state.next.game.elapsed_time = next_state.next.game.elapsed_time + (*tick);
+    next_state.next.game.world = world.clone();
+    next_state = set_view_for_position(&next_state, &Vector2 { x: 0, y: 0 });
     next_state
 }
 
@@ -80,13 +73,34 @@ fn set_view_for_position(state: &State, view_position: &Vector2<i32>) -> State {
 
     next_state.next.game.views = views;
     next_state.next.game.view_position = next_view_position;
-    next_state.next.game.translation =
-        calculate_translation_for_view_position(&next_state, &next_view_position);
+    next_state.next.game.translation = calculate_translation_for_view_position(&next_state, &next_view_position);
     next_state
+}
+
+fn handle_key_up(state: &State, key: &String) -> State {
+    let view_position = state.next.game.view_position;
+    let cursor = state.next.game.cursor;
+
+    match key.as_ref() {
+        "w" => set_cursor(state, &(cursor - Vector2 { x: 0, y: 1 })),
+        "d" => set_cursor(state, &(cursor - Vector2 { x: 1, y: 0 })),
+        "s" => set_cursor(state, &(cursor - Vector2 { x: 0, y: 1 })),
+        "a" => set_cursor(state, &(cursor - Vector2 { x: 1, y: 0 })),
+        "ArrowUp" => set_view_for_position(state, &(view_position - Vector2 { x: 0, y: 1 })),
+        "ArrowRight" => set_view_for_position(state, &(view_position + Vector2 { x: 1, y: 0 })),
+        "ArrowDown" => set_view_for_position(state, &(view_position + Vector2 { x: 0, y: 1 })),
+        "ArrowLeft" => set_view_for_position(state, &(view_position - Vector2 { x: 1, y: 0 })),
+        _ => default(state),
+    }
+}
+
+fn handle_key_down(state: &State, _key: &str) -> State {
+    default(&state)
 }
 
 pub fn game_reducer(state: &State, action: &Actions) -> State {
     match action {
+        Actions::GameStartNew() => start_new_game(state),
         Actions::GameSetElapsedTime(dt) => set_elapsed_time(state, dt),
         Actions::GameSetWorld(w) => set_world(state, w),
         Actions::GameSetGameCursor(c) => set_cursor(state, c),

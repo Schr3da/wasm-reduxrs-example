@@ -26,6 +26,10 @@ impl Game {
         self.store.dispatch(action);
     }
 
+    pub fn start_new_game(&mut self) {
+        self.action(Actions::GameStartNew());
+    }
+
     pub fn set_callback(&mut self, cb: OnChangeCallback) {
         self.action(Actions::AppSetOnChangeCallback(cb));
     }

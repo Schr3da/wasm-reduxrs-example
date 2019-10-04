@@ -84,6 +84,7 @@ fn render_changes(canvas: &HtmlCanvasElement) -> OnChangeCallback {
 #[wasm_bindgen(start)]
 pub fn main() -> Result<(), JsValue> {
     let instance = Rc::new(RefCell::new(Game::new()));
+    instance.as_ref().borrow_mut().start_new_game();
 
     let canvas = create_canvas(instance.clone())?;
     let renderer = render_changes(&canvas);
