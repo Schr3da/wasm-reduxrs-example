@@ -44,9 +44,8 @@ fn add_listeners(instance: SharedGameRef) {
         instance_key_down.borrow_mut().key_down(e.key());
     }) as Box<dyn FnMut(_)>);
     window
-        .add_event_listener_with_callback("keydown",
-            handle_key_down.as_ref().unchecked_ref()
-        ).unwrap();
+        .add_event_listener_with_callback("keydown", handle_key_down.as_ref().unchecked_ref())
+        .unwrap();
     handle_key_down.forget();
 
     let instance_key_up = instance.clone();
@@ -54,9 +53,8 @@ fn add_listeners(instance: SharedGameRef) {
         instance_key_up.borrow_mut().key_up(e.key());
     }) as Box<dyn FnMut(_)>);
     window
-        .add_event_listener_with_callback("keydown", 
-            handle_key_up.as_ref().unchecked_ref()
-        ).unwrap();
+        .add_event_listener_with_callback("keydown", handle_key_up.as_ref().unchecked_ref())
+        .unwrap();
     handle_key_up.forget();
 }
 
@@ -65,7 +63,8 @@ fn update(instance: SharedGameRef) -> Result<i32, JsValue> {
     let cb = Closure::wrap(Box::new(move || game.as_ref().borrow_mut().update()) as Box<dyn Fn()>);
 
     let state = instance.as_ref().borrow().state().clone();
-    let id = window().unwrap()
+    let id = window()
+        .unwrap()
         .set_interval_with_callback_and_timeout_and_arguments_0(
             cb.as_ref().unchecked_ref(),
             state.next.settings.update_interval,
@@ -107,7 +106,7 @@ pub fn main() -> Result<(), JsValue> {
     let canvas = create_canvas(instance.clone())?;
     let interval = update(instance.clone());
     let renderer = render(&canvas);
-    
+
     instance.as_ref().borrow_mut().set_callback(renderer);
     add_listeners(instance);
 
