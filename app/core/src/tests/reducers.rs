@@ -13,7 +13,7 @@ pub fn test_prev_and_next_state() {
         assert!(state.prev.game.elapsed_time != state.next.game.elapsed_time);
     };
     store.subscribe(listener);
-    store.dispatch(Actions::GameSetElapsedTime(1000.));
+    store.dispatch(Actions::GameSetElapsedTime(1000));
 }
 
 #[test]

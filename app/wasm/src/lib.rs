@@ -11,7 +11,7 @@ use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
 use crate::core::reducers::state::{OnChangeCallback, State};
-use utils::draw_world;
+use utils::{draw_cursor, draw_world};
 
 type SharedGameRef = Rc<RefCell<Game>>;
 
@@ -82,17 +82,11 @@ fn render(canvas: &HtmlCanvasElement) -> OnChangeCallback {
         .unwrap();
 
     OnChangeCallback::new(Rc::new(move |s: &State| {
-        context.set_transform(1.0, 0.0, 0.0, 1.0, 0.5, 0.5).unwrap();
-
         let resolution = s.next.settings.resolution;
         context.clear_rect(0.0, 0.0, resolution.w as f64, resolution.h as f64);
 
-        let translation = s.next.game.translation;
-        context
-            .translate(-translation.x as f64, -translation.y as f64)
-            .unwrap();
-
         draw_world(&context, s);
+        draw_cursor(&context, s);
     }))
 }
 

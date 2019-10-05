@@ -1,5 +1,6 @@
-use crate::maps::OptionTileVec;
 use cgmath::Vector2;
+
+use crate::models::tile::OptionTileVec;
 
 use super::state::State;
 
@@ -16,12 +17,12 @@ fn max_tiles_to_render(state: &State) -> (i32, i32) {
     (max_x, max_y)
 }
 
-pub fn consider_cursor_resolution_limits(state: &State, cursor: Vector2<i32>) -> Vector2<i32> {
+pub fn consider_cursor_resolution_limits(state: &State, position: Vector2<i32>) -> Vector2<i32> {
     let (max_x, max_y) = max_tiles_to_render(state);
-    if cursor.x < 0 || cursor.x > max_x || cursor.y < 0 || cursor.y > max_y {
-        return state.next.game.cursor;
+    if position.x < 0 || position.x > max_x || position.y < 0 || position.y > max_y {
+        return state.next.game.cursor.position;
     }
-    return cursor;
+    return position;
 }
 
 pub fn consider_scroll_limits(state: &State, next: Vector2<i32>) -> Vector2<i32> {

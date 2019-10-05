@@ -2,34 +2,13 @@ pub mod templates;
 mod utils;
 
 use cgmath::Vector2;
+
 use std::vec::Vec;
 
-use crate::models::geometry::Size;
-use crate::reducers::DEFAULT_TILE_SIZE;
+use crate::reducers::{DEFAULT_TILE_SIZE, DEFAULT_WORLD_SCALE};
+use crate::models::tile::{Tile, OptionTileVec};
+use crate::maps::templates::TEMPLE_MAP;
 use utils::{scale_tiles_x_direction, scale_tiles_y_direction};
-
-pub type OptionTile = Option<Tile>;
-pub type OptionTileVec = Vec<OptionTile>;
-
-#[derive(Clone, Copy, Debug)]
-pub struct Tile {
-    pub position: Vector2<i32>,
-    pub size: Size<i32>,
-    pub symbol: char,
-}
-
-impl Tile {
-    fn new(x: i32, y: i32, symbol: char) -> Option<Tile> {
-        match symbol {
-            ' ' => None,
-            _ => Some(Tile {
-                position: Vector2::new(x, y),
-                size: DEFAULT_TILE_SIZE,
-                symbol,
-            }),
-        }
-    }
-}
 
 #[derive(Clone, Debug)]
 pub struct Map {
@@ -47,8 +26,14 @@ impl Map {
             .map(|(y, d)| {
                 d.chars()
                     .enumerate()
-                    .map(|(x, s)| Tile::new(x as i32, y as i32, s))
-                    .collect::<OptionTileVec>()
+                    .map(|(x, s)| Tile::new(
+                        Vector2{
+                            x: x as i32,
+                            y: y as i32,
+                        },
+                        DEFAULT_TILE_SIZE,
+                        s
+                    )).collect::<OptionTileVec>()
             })
             .collect::<Vec<OptionTileVec>>();
 
@@ -60,6 +45,12 @@ impl Map {
 pub struct World {
     pub map: Map,
     pub tiles: Vec<OptionTileVec>,
+}
+
+impl Default for World {
+    fn default() -> Self {
+        World::new(TEMPLE_MAP, DEFAULT_WORLD_SCALE)
+    }
 }
 
 impl World {

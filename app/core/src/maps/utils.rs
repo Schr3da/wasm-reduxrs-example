@@ -1,4 +1,7 @@
-use super::{OptionTile, OptionTileVec, Tile};
+use cgmath::Vector2;
+
+use crate::models::tile::{OptionTile, OptionTileVec, Tile};
+use crate::reducers::DEFAULT_TILE_SIZE;
 
 pub fn scale_tiles_x_direction(
     scale: i32,
@@ -10,7 +13,11 @@ pub fn scale_tiles_x_direction(
                     (0..scale).for_each(|index| {
                         let x = (t.position.x * scale + index) * t.size.w;
                         let y = t.position.y;
-                        result.push(Tile::new(x, y, t.symbol));
+                        result.push(Tile::new(
+                            Vector2{x, y},
+                            DEFAULT_TILE_SIZE, 
+                            t.symbol
+                        ));
                     });
                 }
                 None => println!("invalid tile"),
@@ -31,7 +38,12 @@ pub fn scale_tiles_y_direction(
                         Some(v) => {
                             let x = v.position.x;
                             let y = (v.position.y * scale + index) * v.size.h;
-                            scaled_tiles.push(Tile::new(x, y, v.symbol))
+                            scaled_tiles.push(
+                                Tile::new(
+                                    Vector2{x, y},
+                                    DEFAULT_TILE_SIZE,
+                                    v.symbol
+                                ))
                         }
                         _ => println!("Invalid tile"),
                     };
