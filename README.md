@@ -1,4 +1,4 @@
-# war-of-empires
+# warcrap
 
 Goal of this project is to create a ascii character based strategy game inspired by warcraft 3.
 However major focus of the project is its architecture and glue code to potentially support a wide range of platforms.
