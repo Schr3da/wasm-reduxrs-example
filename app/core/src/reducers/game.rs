@@ -12,6 +12,7 @@ use super::utils::{
     consider_cursor_resolution_limits,
     consider_scroll_limits,
     tiles_for_world_view,
+    get_selected_cursor_tile,
 };
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
@@ -53,9 +54,20 @@ fn set_elapsed_time(state: &State, tick: &i32) -> State {
     next_state
 }
 
-fn set_cursor(state: &State, position: Vector2<i32>) -> State {
+fn set_cursor_position(state: &State, position: Vector2<i32>) -> State {
     let mut next_state = next(state);
+    next_state.next.game.cursor.selected_tile = Option::None;
     next_state.next.game.cursor.position = consider_cursor_resolution_limits(&state, position);
+    next_state
+}
+
+fn toggle_cursor_tile(state: &State) -> State {
+    let mut next_state = next(state);
+    let selected_tile = match next_state.next.game.cursor.selected_tile {
+        Some(_t) => Option::None,
+        _ => get_selected_cursor_tile(&next_state),
+    };
+    next_state.next.game.cursor.selected_tile = selected_tile;
     next_state
 }
 
@@ -76,6 +88,7 @@ fn set_view_for_position(state: &State, view_position: Vector2<i32>) -> State {
 
     views.insert(STATIC_WORLD_VIEW_ITEMS, world_view);
 
+    next_state.next.game.cursor.selected_tile = None;
     next_state.next.game.views = views;
     next_state.next.game.view_position = next_view_position;
     next_state.next.game.translation =
@@ -88,10 +101,11 @@ fn handle_key_up(state: &State, key: &String) -> State {
     let cursor_position = state.next.game.cursor.position;
 
     match key.as_ref() {
-        "w" => set_cursor(state, cursor_position - Vector2 { x: 0, y: 1 }),
-        "d" => set_cursor(state, cursor_position + Vector2 { x: 1, y: 0 }),
-        "s" => set_cursor(state, cursor_position + Vector2 { x: 0, y: 1 }),
-        "a" => set_cursor(state, cursor_position - Vector2 { x: 1, y: 0 }),
+        "w" => set_cursor_position(state, cursor_position - Vector2 { x: 0, y: 1 }),
+        "d" => set_cursor_position(state, cursor_position + Vector2 { x: 1, y: 0 }),
+        "s" => set_cursor_position(state, cursor_position + Vector2 { x: 0, y: 1 }),
+        "a" => set_cursor_position(state, cursor_position - Vector2 { x: 1, y: 0 }),
+        " " => toggle_cursor_tile(state),
         "ArrowUp" => set_view_for_position(state, view_position - Vector2 { x: 0, y: 1 }),
         "ArrowRight" => set_view_for_position(state, view_position + Vector2 { x: 1, y: 0 }),
         "ArrowDown" => set_view_for_position(state, view_position + Vector2 { x: 0, y: 1 }),
@@ -110,7 +124,7 @@ pub fn game_reducer(state: &State, action: &Actions) -> State {
         Actions::GameSetElapsedTime(dt) => set_elapsed_time(state, dt),
         Actions::GameSetWorld(w) => set_world(state, w),
         Actions::GameSetViewForPosition(v) => set_view_for_position(state, *v),
-        Actions::GameSetGameCursor(c) => set_cursor(state, *c),
+        Actions::GameSetGameCursor(c) => set_cursor_position(state, *c),
         Actions::GameHandleKeyUp(k) => handle_key_up(state, k),
         Actions::GameHandleKeyDown(k) => handle_key_down(state, k),
         _ => default(state),

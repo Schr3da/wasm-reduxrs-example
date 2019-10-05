@@ -6,7 +6,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent};
+use web_sys::{console, window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent};
 
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
@@ -40,6 +40,8 @@ fn add_listeners(instance: SharedGameRef) {
 
     let instance_key_down = instance.clone();
     let handle_key_down = Closure::wrap(Box::new(move |e: KeyboardEvent| {
+        
+        console::log_1(&e.key().into());
         instance_key_down.borrow_mut().key_down(e.key());
     }) as Box<dyn FnMut(_)>);
     window

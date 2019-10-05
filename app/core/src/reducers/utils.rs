@@ -1,8 +1,9 @@
 use cgmath::Vector2;
 
-use crate::models::tile::OptionTileVec;
+use crate::models::tile::{OptionTileVec, OptionTile};
 
 use super::state::State;
+use super::game::STATIC_WORLD_VIEW_ITEMS;
 
 fn is_out_of_bounds<T>(index: usize, array: &Vec<T>) -> bool {
     let length = array.len();
@@ -23,6 +24,18 @@ pub fn consider_cursor_resolution_limits(state: &State, position: Vector2<i32>) 
         return state.next.game.cursor.position;
     }
     return position;
+}
+
+pub fn get_selected_cursor_tile(state: &State) -> OptionTile {
+    let view = &state.next.game.views[STATIC_WORLD_VIEW_ITEMS];
+    let position = state.next.game.cursor.position;
+    let index = (position.x * position.y) as usize;
+
+    if is_out_of_bounds(index, view) {
+        return Option::None;
+    }
+
+    return view[index].clone();
 }
 
 pub fn consider_scroll_limits(state: &State, next: Vector2<i32>) -> Vector2<i32> {

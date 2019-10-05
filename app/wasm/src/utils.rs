@@ -4,17 +4,43 @@ use crate::core::reducers::state::State;
 
 pub fn draw_cursor(context: &CanvasRenderingContext2d, state: &State) {
     let tile_size = state.next.settings.default_tile_size;
-    let cursor_position = state.next.game.cursor.position;
+    let cursor = state.next.game.cursor;
+    let pos_x = (cursor.position.x * tile_size.w) as f64;
+    let pos_y = (cursor.position.y * tile_size.h) as f64;
 
     context.save();
-    context.set_stroke_style(&"blue".into());
-    context.set_line_width(2.into());
-    context.stroke_rect(
-        (cursor_position.x * tile_size.w) as f64,
-        (cursor_position.y * tile_size.h) as f64,
-        tile_size.w as f64,
-        tile_size.h as f64,
-    );
+    
+    match cursor.selected_tile {
+        Option::Some(t) => {
+            context.set_fill_style(&"blue".into());
+            context.fill_rect(
+                pos_x,
+                pos_y,
+                tile_size.w as f64,
+                tile_size.h as f64,
+            );
+
+            context.set_fill_style(&"white".into());
+            context.set_text_align(&"center");
+            context.set_font(&"12px Arial");
+            context.fill_text(
+                &t.symbol.to_string(),
+                pos_x + 8.0,
+                pos_y + 12.0,
+            ).unwrap();
+        },
+        Option::None => {
+            context.set_stroke_style(&"blue".into());
+            context.set_line_width(2.into());
+            context.stroke_rect(
+                pos_x,
+                pos_y,
+                tile_size.w as f64,
+                tile_size.h as f64,
+            );
+        }
+    };
+
     context.restore();
 }
 
