@@ -17,7 +17,7 @@ use state::{state_reducer, OnChangeCallback, State};
 
 pub static DEFAULT_WORLD_SCALE: i32 = 5;
 pub static DEFAULT_TILE_SIZE: Size<i32> = Size { w: 16, h: 16 };
-pub static DEFAULT_RESOLUTION: Size<i32> = Size { w: 800, h: 600 };
+pub static DEFAULT_RESOLUTION: Size<i32> = Size { w: 180, h: 180 };
 
 pub enum Actions {
     AppValidateTest(bool),

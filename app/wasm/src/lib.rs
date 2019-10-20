@@ -11,7 +11,7 @@ use web_sys::{console, window, CanvasRenderingContext2d, HtmlCanvasElement, Keyb
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
 use crate::core::reducers::state::{OnChangeCallback, State};
-use utils::{draw_cursor, draw_world};
+use utils::{draw_cursor_tile, draw_cursor, draw_world};
 
 type SharedGameRef = Rc<RefCell<Game>>;
 
@@ -64,6 +64,7 @@ fn update(instance: SharedGameRef) -> Result<i32, JsValue> {
     let cb = Closure::wrap(Box::new(move || game.as_ref().borrow_mut().update()) as Box<dyn Fn()>);
 
     let state = instance.as_ref().borrow().state().clone();
+  
     let id = window()
         .unwrap()
         .set_interval_with_callback_and_timeout_and_arguments_0(
@@ -89,6 +90,7 @@ fn render(canvas: &HtmlCanvasElement) -> OnChangeCallback {
 
         draw_world(&context, s);
         draw_cursor(&context, s);
+        draw_cursor_tile(&context, s)
     }))
 }
 

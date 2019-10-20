@@ -80,7 +80,6 @@ fn set_world(state: &State, world: &World) -> State {
 
 fn set_view_for_position(state: &State, view_position: Vector2<i32>) -> State {
     let mut next_state = next(state);
-
     let next_view_position = consider_scroll_limits(&state, view_position);
 
     let mut views: HashMap<&'static str, Vec<Option<Tile>>> = HashMap::new();
