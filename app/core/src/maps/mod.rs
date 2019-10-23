@@ -5,9 +5,9 @@ use cgmath::Vector2;
 
 use std::vec::Vec;
 
-use crate::reducers::{DEFAULT_TILE_SIZE, DEFAULT_WORLD_SCALE};
-use crate::models::tile::{Tile, OptionTileVec};
 use crate::maps::templates::TEMPLE_MAP;
+use crate::models::tile::{OptionTileVec, Tile};
+use crate::reducers::{DEFAULT_TILE_SIZE, DEFAULT_WORLD_SCALE};
 use utils::{scale_tiles_x_direction, scale_tiles_y_direction};
 
 #[derive(Clone, Debug)]
@@ -26,14 +26,17 @@ impl Map {
             .map(|(y, d)| {
                 d.chars()
                     .enumerate()
-                    .map(|(x, s)| Tile::new(
-                        Vector2{
-                            x: x as i32,
-                            y: y as i32,
-                        },
-                        DEFAULT_TILE_SIZE,
-                        s
-                    )).collect::<OptionTileVec>()
+                    .map(|(x, s)| {
+                        Tile::new(
+                            Vector2 {
+                                x: x as i32,
+                                y: y as i32,
+                            },
+                            DEFAULT_TILE_SIZE,
+                            s,
+                        )
+                    })
+                    .collect::<OptionTileVec>()
             })
             .collect::<Vec<OptionTileVec>>();
 

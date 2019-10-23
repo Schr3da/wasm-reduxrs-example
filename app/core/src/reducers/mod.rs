@@ -31,7 +31,7 @@ pub enum Actions {
     GameSetElapsedTime(i32),
     GameSetGameCursor(Vector2<i32>),
     GameSetWorld(World),
-    GameSetViewForPosition(Vector2<i32>), 
+    GameSetViewForPosition(Vector2<i32>),
 }
 
 pub fn create_store() -> Store<State, Actions> {

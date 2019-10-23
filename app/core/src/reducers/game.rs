@@ -2,18 +2,15 @@ use cgmath::Vector2;
 use std::collections::HashMap;
 
 use crate::maps::World;
-use crate::models::tile::Tile;
 use crate::models::cursor::Cursor;
+use crate::models::tile::Tile;
 
-use super::Actions;
 use super::state::{default, next, State};
 use super::utils::{
-    calculate_translation_for_view_position,
-    consider_cursor_resolution_limits,
-    consider_scroll_limits,
-    tiles_for_world_view,
-    get_selected_cursor_tile,
+    calculate_translation_for_view_position, consider_cursor_resolution_limits,
+    consider_scroll_limits, get_selected_cursor_tile, tiles_for_world_view,
 };
+use super::Actions;
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
 
@@ -33,9 +30,9 @@ impl Default for Game {
             elapsed_time: 0,
             world: World::default(),
             cursor: Cursor::default(),
-            view_position: Vector2::new(0, 0),
             views: HashMap::new(),
-            translation: Vector2 { x: 0, y: 0 },
+            view_position: Vector2::new(0, 0),
+            translation: Vector2::new(0, 0),
         }
     }
 }

@@ -12,8 +12,7 @@ impl Default for Cursor {
     fn default() -> Self {
         Cursor {
             selected_tile: Option::None,
-            position: Vector2{ x: 0, y: 0 },
+            position: Vector2 { x: 0, y: 0 },
         }
     }
 }
-

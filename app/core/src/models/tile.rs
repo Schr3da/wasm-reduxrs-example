@@ -1,4 +1,3 @@
-
 use cgmath::Vector2;
 use std::vec::Vec;
 
@@ -19,12 +18,10 @@ impl Tile {
         match symbol {
             ' ' => None,
             _ => Some(Tile {
-                position, 
+                position,
                 size,
                 symbol,
             }),
         }
     }
 }
-
-
