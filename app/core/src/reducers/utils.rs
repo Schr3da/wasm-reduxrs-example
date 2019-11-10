@@ -1,6 +1,6 @@
 use cgmath::Vector2;
 
-use crate::models::tile::{OptionTile, OptionTileVec, Tile};
+use crate::models::tile::{OptionTile, OptionTileVec};
 
 use super::game::STATIC_WORLD_VIEW_ITEMS;
 use super::state::State;

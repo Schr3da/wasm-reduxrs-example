@@ -58,6 +58,15 @@ fn set_cursor_position(state: &State, position: Vector2<i32>) -> State {
     next_state
 }
 
+fn select_tile_at_cursor_position(state: &State, position: Vector2<i32>) -> State {
+    let mut next_state = next(state);
+    let selected_tile = get_selected_cursor_tile(&next_state);
+    next_state.next.game.cursor.selected_tile = selected_tile;
+    next_state.next.game.cursor.position = position; 
+    next_state
+}
+
+
 fn toggle_cursor_tile(state: &State) -> State {
     let mut next_state = next(state);
     let selected_tile = match next_state.next.game.cursor.selected_tile {
@@ -121,6 +130,7 @@ pub fn game_reducer(state: &State, action: &Actions) -> State {
         Actions::GameSetWorld(w) => set_world(state, w),
         Actions::GameSetViewForPosition(v) => set_view_for_position(state, *v),
         Actions::GameSetGameCursor(c) => set_cursor_position(state, *c),
+        Actions::GameSelectTileAtPosition(p) => select_tile_at_cursor_position(state, *p),
         Actions::GameHandleKeyUp(k) => handle_key_up(state, k),
         Actions::GameHandleKeyDown(k) => handle_key_down(state, k),
         _ => default(state),

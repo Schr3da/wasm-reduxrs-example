@@ -1,5 +1,6 @@
 use cgmath::Vector2;
 use redux_rs::Store;
+use math::round::floor;
 
 use crate::reducers::create_store;
 use crate::reducers::state::{OnChangeCallback, State};
@@ -36,6 +37,18 @@ impl Game {
 
     pub fn mouse_moved(&mut self, x: i32, y: i32) {
         self.action(Actions::GameSetGameCursor(Vector2 { x, y }));
+    }
+
+    pub fn mouse_up(&mut self, x: i32, y: i32) {
+        let state = self.state();
+        let size = state.next.settings.default_tile_size;
+
+        self.action(Actions::GameSelectTileAtPosition(
+            Vector2 {
+                x: floor((x / size.w) as f64, 1) as i32,
+                y: floor((y / size.h) as f64, 1) as i32,
+            }
+        ));
     }
 
     pub fn key_up(&mut self, key: String) {

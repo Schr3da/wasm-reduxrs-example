@@ -6,7 +6,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{console, window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent};
+use web_sys::{console, window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent, MouseEvent};
 
 use crate::core::game::Game;
 use crate::core::reducers::settings::Settings;
@@ -35,7 +35,7 @@ fn set_size(canvas: &mut HtmlCanvasElement, settings: &Settings) {
     canvas.set_height(settings.resolution.h as u32);
 }
 
-fn add_listeners(instance: SharedGameRef) {
+fn add_listeners(canvas: &HtmlCanvasElement, instance: SharedGameRef) {
     let window = window().unwrap();
 
     let instance_key_down = instance.clone();
@@ -56,6 +56,13 @@ fn add_listeners(instance: SharedGameRef) {
         .add_event_listener_with_callback("keydown", handle_key_up.as_ref().unchecked_ref())
         .unwrap();
     handle_key_up.forget();
+
+    let instance_mouse_up = instance.clone();
+    let handle_mouse_up = Closure::wrap(Box::new(move |e: MouseEvent| {
+        instance_mouse_up.borrow_mut().mouse_up(e.offset_x(), e.offset_y());
+    }) as Box<dyn FnMut(_)>);
+    canvas.add_event_listener_with_callback("mouseup", handle_mouse_up.as_ref().unchecked_ref()).unwrap();
+    handle_mouse_up.forget();
 }
 
 fn update(instance: SharedGameRef) -> Result<i32, JsValue> {
@@ -102,7 +109,7 @@ pub fn main() -> Result<(), JsValue> {
     let renderer = render(&canvas);
 
     instance.as_ref().borrow_mut().set_callback(renderer);
-    add_listeners(instance);
+    add_listeners(&canvas, instance);
 
     Ok(())
 }

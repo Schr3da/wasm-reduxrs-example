@@ -8,5 +8,6 @@ edition = "2018"
 name = "core"
 
 [dependencies]
+libmath= "0.2.1"
 cgmath = "0.17.0"
 redux-rs = "0.1.0"
