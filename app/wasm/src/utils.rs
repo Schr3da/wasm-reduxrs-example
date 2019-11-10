@@ -1,4 +1,4 @@
-use web_sys::CanvasRenderingContext2d;
+use web_sys::{CanvasRenderingContext2d};
 
 use crate::core::reducers::state::State;
 

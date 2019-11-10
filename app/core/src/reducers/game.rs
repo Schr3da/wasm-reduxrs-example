@@ -1,16 +1,17 @@
 use cgmath::Vector2;
+use math::round::floor;
 use std::collections::HashMap;
 
 use crate::maps::World;
 use crate::models::cursor::Cursor;
 use crate::models::tile::Tile;
 
+use super::{Actions, MouseActions};
 use super::state::{default, next, State};
 use super::utils::{
     calculate_translation_for_view_position, consider_cursor_resolution_limits,
     consider_scroll_limits, get_selected_cursor_tile, tiles_for_world_view,
 };
-use super::Actions;
 
 pub static STATIC_WORLD_VIEW_ITEMS: &'static str = "static_world_items";
 
@@ -60,12 +61,12 @@ fn set_cursor_position(state: &State, position: Vector2<i32>) -> State {
 
 fn select_tile_at_cursor_position(state: &State, position: Vector2<i32>) -> State {
     let mut next_state = next(state);
+    next_state.next.game.cursor.position = consider_cursor_resolution_limits(&state, position);
+    
     let selected_tile = get_selected_cursor_tile(&next_state);
     next_state.next.game.cursor.selected_tile = selected_tile;
-    next_state.next.game.cursor.position = position; 
     next_state
 }
-
 
 fn toggle_cursor_tile(state: &State) -> State {
     let mut next_state = next(state);
@@ -101,6 +102,21 @@ fn set_view_for_position(state: &State, view_position: Vector2<i32>) -> State {
     next_state
 }
 
+fn handle_mouse_up(state: &State, action: &MouseActions) -> State {
+    let next_state = next(state); 
+    let size = next_state.next.settings.default_tile_size;
+   
+    match action {
+        MouseActions::Primary(x, y) =>
+            select_tile_at_cursor_position(&next_state, Vector2 {
+                x: floor((x / size.w) as f64, 1) as i32,
+                y: floor((y / size.h) as f64, 1) as i32,
+            }),
+        _ => next_state
+    }
+}
+
+
 fn handle_key_up(state: &State, key: &String) -> State {
     let view_position = state.next.game.view_position;
     let cursor_position = state.next.game.cursor.position;
@@ -130,9 +146,9 @@ pub fn game_reducer(state: &State, action: &Actions) -> State {
         Actions::GameSetWorld(w) => set_world(state, w),
         Actions::GameSetViewForPosition(v) => set_view_for_position(state, *v),
         Actions::GameSetGameCursor(c) => set_cursor_position(state, *c),
-        Actions::GameSelectTileAtPosition(p) => select_tile_at_cursor_position(state, *p),
         Actions::GameHandleKeyUp(k) => handle_key_up(state, k),
         Actions::GameHandleKeyDown(k) => handle_key_down(state, k),
+        Actions::GameHandleMouseUp(a) => handle_mouse_up(state, a),
         _ => default(state),
     }
 }

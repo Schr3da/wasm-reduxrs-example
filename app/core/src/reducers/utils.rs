@@ -27,11 +27,11 @@ pub fn consider_cursor_resolution_limits(state: &State, position: Vector2<i32>) 
 }
 
 pub fn get_selected_cursor_tile(state: &State) -> OptionTile {
-    let (_, max_y) = max_tiles_to_render(state);
+    let (max_x, _) = max_tiles_to_render(state);
     let view = &state.next.game.views[STATIC_WORLD_VIEW_ITEMS];
     let position = state.next.game.cursor.position;
-
-    let index = (position.x + position.y * max_y) as usize;
+        
+    let index = (position.x + position.y * max_x) as usize;
 
     if is_out_of_bounds(index, view) {
         return Option::None;

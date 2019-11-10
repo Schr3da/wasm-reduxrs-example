@@ -17,7 +17,12 @@ use state::{state_reducer, OnChangeCallback, State};
 
 pub static DEFAULT_WORLD_SCALE: i32 = 5;
 pub static DEFAULT_TILE_SIZE: Size<i32> = Size { w: 16, h: 16 };
-pub static DEFAULT_RESOLUTION: Size<i32> = Size { w: 180, h: 180 };
+pub static DEFAULT_RESOLUTION: Size<i32> = Size { w: 480, h: 320 };
+
+pub enum MouseActions {
+    Primary(i32, i32),
+    Secondary(i32, i32),
+}
 
 pub enum Actions {
     AppValidateTest(bool),
@@ -28,6 +33,7 @@ pub enum Actions {
     GameStartNew(),
     GameHandleKeyUp(String),
     GameHandleKeyDown(String),
+    GameHandleMouseUp(MouseActions),
     GameSetElapsedTime(i32),
     GameSetGameCursor(Vector2<i32>),
     GameSetWorld(World),

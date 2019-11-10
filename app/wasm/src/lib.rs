@@ -6,9 +6,12 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{console, window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent, MouseEvent};
+use web_sys::{
+    console, window, CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent, MouseEvent,
+};
 
 use crate::core::game::Game;
+use crate::core::reducers::MouseActions;
 use crate::core::reducers::settings::Settings;
 use crate::core::reducers::state::{OnChangeCallback, State};
 use utils::{draw_cursor, draw_world};
@@ -59,9 +62,18 @@ fn add_listeners(canvas: &HtmlCanvasElement, instance: SharedGameRef) {
 
     let instance_mouse_up = instance.clone();
     let handle_mouse_up = Closure::wrap(Box::new(move |e: MouseEvent| {
-        instance_mouse_up.borrow_mut().mouse_up(e.offset_x(), e.offset_y());
+        let x = e.offset_x();
+        let y = e.offset_y();
+
+        match e.button() {
+            0 => instance_mouse_up.borrow_mut().mouse_up(MouseActions::Primary(x, y)),
+            2 => instance_mouse_up.borrow_mut().mouse_up(MouseActions::Secondary(x, y)),
+            _ => print!("Mouse button not supported"),
+        };
     }) as Box<dyn FnMut(_)>);
-    canvas.add_event_listener_with_callback("mouseup", handle_mouse_up.as_ref().unchecked_ref()).unwrap();
+    canvas
+        .add_event_listener_with_callback("mouseup", handle_mouse_up.as_ref().unchecked_ref())
+        .unwrap();
     handle_mouse_up.forget();
 }
 
