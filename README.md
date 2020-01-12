@@ -19,9 +19,9 @@
   git clone https://github.com/Schr3da/wasm-reduxrs-example.git
   ```
 
-- Change into wasm-reduxrs-example/app/wasm
+- Change into wasm-reduxrs-example/wasm
   ```
-  cd wasm-reduxrs-example/app/wasm
+  cd wasm-reduxrs-example/wasm
   ```
 
 - Build project using wasm-pack
@@ -31,7 +31,7 @@
   
 - Use a static http-server to host application
   ```
-  http-server wasm-reduxrs-example/app/wasm/
+  http-server wasm-reduxrs-example/wasm/
   ```
   
 - Use browser to access the index.html page e.g.
