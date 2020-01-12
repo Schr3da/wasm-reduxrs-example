@@ -1,4 +1,4 @@
-# Demo Reduxrs and Wasm
+# Rust demo: Reduxrs and Wasm
 
 ![Demo](https://github.com/Schr3da/wasm-reduxrs-example/blob/master/demo.gif)
 
